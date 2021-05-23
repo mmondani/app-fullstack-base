@@ -11,10 +11,10 @@ class Main {
         listaUsers.forEach((user: User) => {
             user.printInfo();
         })
-    }
 
-    getElementById (): HTMLElement {
-        return document.getElementById("boton");
+        let myFramework = new MyFramework();
+        let boton = myFramework.getElementById();
+        boton.textContent = "Click Me";
     }
 }
 
@@ -22,7 +22,4 @@ window.onload = function () {
     let main : Main = new Main();
 
     main.main();
-
-    let boton = main.getElementById();
-    boton.textContent = "Click";
 }
