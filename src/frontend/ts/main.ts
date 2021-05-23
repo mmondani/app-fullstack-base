@@ -1,5 +1,9 @@
+interface EventListenerObject {
+    handleEvent (evt: Event): void;
+}
 
-class Main {
+
+class Main  implements EventListenerObject {
     main () {
         console.log("Hola mundo");
 
@@ -13,7 +17,7 @@ class Main {
         let myFramework = new MyFramework();
         let boton = myFramework.getElementById();
         boton.textContent = "Click Me";
-        boton.addEventListener("click", this.evento);
+        boton.addEventListener("click", this);
     }
 
     mostrarUsers (users:Array<User>) {
@@ -22,7 +26,8 @@ class Main {
         })
     }
 
-    evento (ev: Event) {
+
+    handleEvent (evt: Event): void {
         console.log("se hizo click!");
         console.log(this);
     }
