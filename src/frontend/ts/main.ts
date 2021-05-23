@@ -8,13 +8,17 @@ class Main {
         listaUsers.push(new User(2, "Usuario 2", "usuario2@mail.com", false));
         listaUsers.push(new User(3, "Usuario 3", "usuario3@mail.com", true));
 
-        listaUsers.forEach((user: User) => {
-            user.printInfo();
-        })
+        this.mostrarUsers(listaUsers);
 
         let myFramework = new MyFramework();
         let boton = myFramework.getElementById();
         boton.textContent = "Click Me";
+    }
+
+    mostrarUsers (users:Array<User>) {
+        users.forEach((user: User) => {
+            user.printInfo();
+        })
     }
 }
 
