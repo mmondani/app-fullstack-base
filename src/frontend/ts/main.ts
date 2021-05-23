@@ -4,6 +4,9 @@ interface EventListenerObject {
 
 
 class Main  implements EventListenerObject {
+    myFramework: MyFramework;
+    clicks: number = 0;
+
     main () {
         console.log("Hola mundo");
 
@@ -14,9 +17,9 @@ class Main  implements EventListenerObject {
 
         this.mostrarUsers(listaUsers);
 
-        let myFramework = new MyFramework();
-        let boton = myFramework.getElementById();
-        boton.textContent = "Click Me";
+        this.myFramework = new MyFramework();
+
+        let boton = this.myFramework.getElementById();
         boton.addEventListener("click", this);
     }
 
@@ -28,7 +31,12 @@ class Main  implements EventListenerObject {
 
 
     handleEvent (evt: Event): void {
-        console.log("se hizo click!");
+        let boton = this.myFramework.getElementByEvent(evt);
+        boton.textContent ="clickeado";
+
+        this.clicks ++;
+        console.log(`clicks: ${this.clicks}`);
+
         console.log(this);
     }
 }
