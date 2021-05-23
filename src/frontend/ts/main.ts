@@ -13,12 +13,18 @@ class Main {
         let myFramework = new MyFramework();
         let boton = myFramework.getElementById();
         boton.textContent = "Click Me";
+        boton.addEventListener("click", this.evento);
     }
 
     mostrarUsers (users:Array<User>) {
         users.forEach((user: User) => {
             user.printInfo();
         })
+    }
+
+    evento (ev: Event) {
+        console.log("se hizo click!");
+        console.log(this);
     }
 }
 
