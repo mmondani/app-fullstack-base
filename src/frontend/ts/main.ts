@@ -3,7 +3,7 @@ interface EventListenerObject {
 }
 
 
-class Main  implements EventListenerObject {
+class Main  implements EventListenerObject, GETResponseListener {
     myFramework: MyFramework;
     clicks: number = 0;
 
@@ -21,6 +21,8 @@ class Main  implements EventListenerObject {
 
         let boton = this.myFramework.getElementById();
         boton.addEventListener("click", this);
+
+        this.myFramework.requestGET("static/devices.txt", this);
     }
 
     mostrarUsers (users:Array<User>) {
@@ -38,6 +40,10 @@ class Main  implements EventListenerObject {
         console.log(`clicks: ${this.clicks}`);
 
         console.log(this);
+    }
+
+    handleGETResponse(status: number, response: string): void {
+        console.log(response);
     }
 }
 
