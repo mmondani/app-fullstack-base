@@ -22,7 +22,7 @@ class Main  implements EventListenerObject, GETResponseListener {
         let boton = this.myFramework.getElementById();
         boton.addEventListener("click", this);
 
-        this.myFramework.requestGET("static/devices.txt", this);
+        this.myFramework.requestGET("/devices", this);
     }
 
     mostrarUsers (users:Array<User>) {
@@ -43,7 +43,8 @@ class Main  implements EventListenerObject, GETResponseListener {
     }
 
     handleGETResponse(status: number, response: string): void {
-        console.log(response);
+        if (status == 200)
+            console.log(JSON.parse(response));
     }
 }
 
