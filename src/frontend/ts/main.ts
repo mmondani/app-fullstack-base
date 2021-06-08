@@ -1,50 +1,72 @@
-interface EventListenerObject {
-    handleEvent (evt: Event): void;
-}
-
-
 class Main  implements EventListenerObject, GETResponseListener {
     myFramework: MyFramework;
     clicks: number = 0;
+    listaDispositivos: Array<Device>;
 
     main () {
         console.log("Hola mundo");
 
-        let listaUsers: Array<User> = new Array<User>();
-        listaUsers.push(new User(1, "Usuario 1", "usuario1@mail.com", false));
-        listaUsers.push(new User(2, "Usuario 2", "usuario2@mail.com", false));
-        listaUsers.push(new User(3, "Usuario 3", "usuario3@mail.com", true));
-
-        this.mostrarUsers(listaUsers);
-
         this.myFramework = new MyFramework();
 
-        let boton = this.myFramework.getElementById();
+        let boton = this.myFramework.getElementById("boton");
         boton.addEventListener("click", this);
 
         this.myFramework.requestGET("/devices", this);
     }
 
-    mostrarUsers (users:Array<User>) {
-        users.forEach((user: User) => {
-            user.printInfo();
-        })
-    }
-
 
     handleEvent (evt: Event): void {
-        let boton = this.myFramework.getElementByEvent(evt);
-        boton.textContent ="clickeado";
+        let elem = <HTMLInputElement>this.myFramework.getElementByEvent(evt);
 
-        this.clicks ++;
-        console.log(`clicks: ${this.clicks}`);
+        if (elem.id.startsWith("switch")) {
+            let idDispo: number = parseInt(elem.id.split("_")[1]);
 
-        console.log(this);
+            this.listaDispositivos.forEach(disp => {
+                if (disp.id == idDispo) {
+                    disp.state = elem.checked;
+
+                    //let data = {"id": disp.id, "status": disp.state};
+                    //this.myFramework.requestPOST("/devices", this, data);
+
+                    if (disp.state)
+                        alert("Se encendió el dispositivo " + disp.name);
+                    else
+                        alert("Se apagó el dispositivo " + disp.name);
+                }
+            })
+        }
     }
 
     handleGETResponse(status: number, response: string): void {
-        if (status == 200)
-            console.log(JSON.parse(response));
+        if (status == 200) {
+            this.listaDispositivos = JSON.parse(response);
+            this.listaDispositivos.forEach(dispositivo => {                
+                let listaDispHtml = this.myFramework.getElementById("listaDispositivos");
+                listaDispHtml.innerHTML +=
+                        `<li class="collection-item avatar">
+                            <i class="material-icons circle">folder</i>
+                            <span class="title">${dispositivo.name}</span>
+                            <p>${dispositivo.description}</p>
+                            <div class="secondary-content">
+                                <div class="switch">
+                                    <label>
+                                        <input id="switch_${dispositivo.id}" type="checkbox" ${(dispositivo.state)? "checked": ""}>
+                                        <span class="lever"></span>
+                                    </label>
+                                </div>
+                            </div>
+                        </li>`;
+            });
+
+            this.listaDispositivos.forEach(dispositivo => {                
+                let sw = this.myFramework.getElementById("switch_" + dispositivo.id);
+                sw.addEventListener("click", this);
+            });
+        }
+    }
+
+    handlePOSTResponse (status: number, response: string): void {
+
     }
 }
 

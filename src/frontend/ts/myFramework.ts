@@ -1,6 +1,6 @@
 class MyFramework {
-    getElementById (): HTMLElement {
-        return document.getElementById("boton");
+    getElementById (id: string): HTMLElement {
+        return document.getElementById(id);
     }
 
     getElementByEvent (ev: Event): HTMLElement{
@@ -23,8 +23,29 @@ class MyFramework {
         xhr.open("GET", url, true);
         xhr.send(null);
     }
+
+    requestPOST (url: string, listener: POSTResponseListener, data: any): void {
+        let xhr: XMLHttpRequest = new XMLHttpRequest;
+
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState == 4) {
+                if (xhr.status == 200)
+                    listener.handlePOSTResponse(xhr.status, xhr.responseText);
+                else
+                    listener.handlePOSTResponse(xhr.status, null);
+            } 
+        }
+
+        xhr.open("POST", url, true);
+        xhr.setRequestHeader("Content-Type", "application/json");
+        xhr.send(JSON.stringify(data));
+    }
 }
 
 interface GETResponseListener {
     handleGETResponse (status: number, response: string): void;
+}
+
+interface POSTResponseListener {
+    handlePOSTResponse (status: number, response: string): void;
 }
