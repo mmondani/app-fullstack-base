@@ -110,3 +110,21 @@ exports.modifyDevice = async (req, res) => {
             res.status(500).send();
     }
 }
+
+
+/**
+ * Elimina el device cuyo ID es igual a req.params.id.
+ * Si la operación es exitosa, retorna un código 200 y el ID del device eliminado.
+ * Si la operación falla, retorna un código 400.
+ * @param {*} req objeto del request realizado
+ * @param {*} res objeto del response al request
+ */
+exports.deleteDevice = async (req, res) => {
+    try {
+        let deletedDevice = await DeviceModel.deleteDevice(parseInt(req.params.id));
+        res.status(200).send(deletedDevice);
+    }
+    catch (error) {
+        res.status(400).send({errores: ["No se encuentra el id"]});
+    }
+}

@@ -232,4 +232,36 @@ module.exports = (app) => {
         DeviceMiddleware.hasModifyDeviceValidFields,
         DeviceController.modifyDevice
     ])
+
+
+    /**
+     * Permite eliminar el device con ID id
+     *
+     * Parámetros URL:
+     *      id [number]: ID del device que se quiere eliminar
+     * 
+     * Body: -
+     * 
+     * Respuesta existosa:
+     *      Código: 200
+     *      Body: ID eliminado
+     * 
+     *      Ejemplo:
+     *      {
+     *          "id": 1,
+     *      }
+     * 
+     * Respuesta fallida:
+     *      Código: 400
+     *      Body: objeto indicando el error
+     *            Posibles errores:
+     *              - No se encuentra el id
+     * 
+     *      {
+     *          "errores": ["No se encuentra el id"]
+     *      }
+     */
+    app.delete("/devices/:id", [
+        DeviceController.deleteDevice
+    ])
 }

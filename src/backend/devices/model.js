@@ -118,3 +118,30 @@ exports.modifyDevice = (data) => {
         }
     });
 }
+
+
+/**
+ * Elimina el device con ID id
+ * @param {number} id ID del dispositivo que se quiere eliminar
+ * 
+ * @returns retorna una Promise para que quede preparado para cuando los devices
+ * se obtengan de una base de datos.
+ */
+exports.deleteDevice = (id) => {
+    return new Promise ((resolve, reject) => {
+        let deleted = false;
+
+        for (let i = 0; i < devices.length; i++) {
+            if (devices[i].id === id) {
+                devices.splice(i, 1);
+                deleted = true;
+                break;
+            }
+        }
+
+        if (deleted)
+            resolve ({id: id});
+        else
+            reject();
+    });
+}
