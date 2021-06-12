@@ -15,9 +15,9 @@
                 </div>
             </nav>	
             <!-- Page Body -->
-            <div class="container" id="main_container">
-                <div class="row">
-                    <button class="btn waves-effect waves-light button-view" id="boton">Presionar</button>
+            <div class="container" id="main_container_devices">
+                <div class="row" style="margin-top: 50px;">
+                    <a class="waves-effect waves-light btn deep-purple darken-2"><i class="material-icons left">lightbulb_outline</i>AGREGAR DISPOSITIVOS</a>
                 </div>
 
                 <div class="row">
@@ -57,7 +57,7 @@
                         <div class="card deep-purple darken-3">
                             
                             <div class="card-content white-text">
-                                <div class='card_dots dropdown-trigger' data-target='dropdown_1'>
+                                <div class='card_dots dropdown-trigger' data-target='dropdown_2'>
                                     <img src="static/images/dots_white.png">
                                 </div>
 
@@ -74,14 +74,27 @@
                             </div>
                         </div>
 
-                        <ul id='dropdown_1' class='dropdown-content indigo lighten-4'>
-                            <li><a id="modifiy_1">Modificar</a></li>
-                            <li><a id="delete_1">Eliminar</a></li>
+                        <ul id='dropdown_2' class='dropdown-content indigo lighten-4'>
+                            <li><a id="modifiy_2">Modificar</a></li>
+                            <li><a id="delete_2">Eliminar</a></li>
                         </ul>
                     </div>
 
                 </div>
             </div>	
+            
+            
+            <div id="modal_new_device" class="modal">
+                <div class="modal-content">
+                    <h4>Agregar dispostivo</h4>
+                    <p>A bunch of text</p>
+                </div>
+                <div class="modal-footer">
+                    <a id="model_new_device_cancel" class="modal-close waves-effect waves-green btn-flat">CANCELAR</a>
+                    <a id="model_new_device_create" class="modal-close waves-effect waves-green btn-flat">CREAR</a>
+                </div>
+            </div>
+
         </main>
 		<!-- Page Footer -->
         <footer class="page-footer deep-purple darken-4">

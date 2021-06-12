@@ -11,8 +11,6 @@ class Main  implements EventListenerObject, GETResponseListener {
 
         this.myFramework = new MyFramework();
 
-        let boton = this.myFramework.getElementById("boton");
-        boton.addEventListener("click", this);
 
         this.myFramework.requestGET("/devices", this);
     }
@@ -42,8 +40,10 @@ class Main  implements EventListenerObject, GETResponseListener {
 
     handleGETResponse(status: number, response: string): void {
         if (status == 200) {
+            /*
             this.listaDispositivos = JSON.parse(response);
-            this.listaDispositivos.forEach(dispositivo => {                
+            this.listaDispositivos.forEach(dispositivo => {  
+                            
                 let listaDispHtml = this.myFramework.getElementById("listaDispositivos");
                 listaDispHtml.innerHTML +=
                         `<li class="collection-item avatar">
@@ -65,6 +65,7 @@ class Main  implements EventListenerObject, GETResponseListener {
                 let sw = this.myFramework.getElementById("switch_" + dispositivo.id);
                 sw.addEventListener("click", this);
             });
+            */
         }
     }
 
@@ -81,4 +82,14 @@ window.onload = function () {
 
     var elems = document.querySelectorAll('.dropdown-trigger');
     var instances = M.Dropdown.init(elems, {});
+
+
+    /*
+    var elems = document.querySelectorAll('.modal');
+    var instances = M.Modal.init(elems, {});
+
+    var modal = <any>document.getElementById("modal_new_device");
+    var instance = M.Modal.getInstance(modal)
+    instance.open();
+    */
 }
