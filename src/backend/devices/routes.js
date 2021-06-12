@@ -1,4 +1,5 @@
 const DeviceController = require("./controller");
+const DeviceMiddleware = require("./middleware");
 
 
 /**
@@ -43,7 +44,7 @@ module.exports = (app) => {
      * Permite obtener el device con ID id
      *
      * Parámetros URL:
-     *      id [number]: ID del dispositivo que se está consultando
+     *      id [number]: ID del device que se está consultando
      * 
      * Body: -
      * 
@@ -62,9 +63,63 @@ module.exports = (app) => {
      * 
      * Respuesta fallida:
      *      Código: 400
-     *      Body: -
+     *      Body: objeto indicando el error
+     *            Posibles errores:
+     *              - No se encuentra el id
+     * 
+     *      {
+     *          "errores": ["No se encuentra el id"]
+     *      }
      */
     app.get("/devices/:id", [
         DeviceController.getById
+    ]);
+
+
+    /**
+     * Permite modificar el estado del deivce con ID id
+     *
+     * Parámetros URL:
+     * 
+     * Body: 
+     *      Campos obligatorios
+     *          id [number]: ID del device
+     *          state [numer]: número entre 0.0 y 1.0 que indica el estado del device
+     * 
+     *      Ejemplo:
+     *      {
+     *          "id": 1,
+     *          "state": 0.7
+     *      }
+     * 
+     * Respuesta existosa:
+     *      Código: 200
+     *      Body: device con el nuevo state
+     * 
+     *      Ejemplo:
+     *      {
+     *          "id": 1,
+     *          "name": "Lámpara 1",
+     *          "description": "Luz Living",
+     *          "state": 0.7,
+     *          "type": 0
+     *      }
+     * 
+     * Respuesta fallida:
+     *      Código: 400
+     *      Body: objeto indicando el/los error/es. 
+     *            Posibles errores:
+     *              - No se encuentra el id
+     *              - Falta el campo id
+     *              - Falta el campo state
+     *              - state debe ser un número entre 0.0 y 1.0
+     * 
+     *      {
+     *          "errores": ["No se encuentra el id"]
+     *      }
+     */
+    app.post("/devices", [
+        DeviceMiddleware.hasSetStateValidFields,
+        DeviceController.setState
     ]);
 }

@@ -30,6 +30,17 @@ exports.getById = async (req, res) => {
         res.status(200).send(device);
     }
     catch (error) {
-        res.status(400).send();
+        res.status(400).send({errores: ["No se encuentra el id"]});
+    }
+}
+
+
+exports.setState = async (req, res) => {
+    try {
+        let device = await DeviceModel.setState(req.body);
+        res.status(200).send(device);
+    }
+    catch (error) {
+        res.status(400).send({errores: ["No se encuentra el id"]});
     }
 }
