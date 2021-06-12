@@ -10,14 +10,39 @@ class Main  implements EventListenerObject, GETResponseListener {
     main () {
         this.myFramework = new MyFramework();
 
+        // Se piden todos los devices al backend
         this.myFramework.requestGET("/devices", this);
+
+        // Se configura el click listener para el elemento HTML que va a contener 
+        // Todos los componentes creados de forma dinámica
+        let mainContainerList = document.getElementById("main_container_devices");
+        mainContainerList.addEventListener("click", this);
+
     }
 
 
     handleEvent (evt: Event): void {
-        /*
+        
         let elem = <HTMLInputElement>this.myFramework.getElementByEvent(evt);
+        let elems = elem.id.split("_");
+        let action = elems[0];
+        let deviceId = elems[1];
 
+        if (evt.type === "click") {
+            if (action === "modify") {
+                console.log ("modify device id = " + deviceId);
+            }
+            else if (action === "delete") {
+                console.log ("delete device id = " + deviceId);
+            }
+            else if (action === "switch") {
+                console.log ("cambio en el control del device id = " + deviceId + ". Valor: " + elem.checked);
+            }
+            else if (action === "slider") {
+                console.log ("cambio en el control del device id = " + deviceId + ". Valor: " + parseInt(elem.value)/10);
+            }
+        }
+        /*
         if (elem.id.startsWith("switch")) {
             let idDispo: number = parseInt(elem.id.split("_")[1]);
 
@@ -36,6 +61,7 @@ class Main  implements EventListenerObject, GETResponseListener {
             })
         }
         */
+        
     }
 
     handleGETResponse(status: number, response: string): void {
@@ -50,13 +76,6 @@ class Main  implements EventListenerObject, GETResponseListener {
 
                 newCard.attach(mainContainerList);
             });
-
-            /*
-            this.listaDispositivos.forEach(dispositivo => {                
-                let sw = this.myFramework.getElementById("switch_" + dispositivo.id);
-                sw.addEventListener("click", this);
-            });
-            */
             
         }
     }
@@ -70,11 +89,6 @@ window.onload = function () {
     let main : Main = new Main();
 
     main.main();
-
-/*
-    var elems = document.querySelectorAll('.dropdown-trigger');
-    var instances = M.Dropdown.init(elems, {});
-*/
 
     /*
     var elems = document.querySelectorAll('.modal');

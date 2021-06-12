@@ -1,9 +1,9 @@
 class UiComponent {
-    public id: number;
+    public device: Device;
     public htmlString: string;
     
-    constructor (id:number) {
-        this.id = id;
+    constructor (device: Device) {
+        this.device = device;
     }
 
     attach (parent: HTMLElement): void {

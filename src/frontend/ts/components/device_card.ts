@@ -1,7 +1,7 @@
 class DeviceCard extends UiComponent {
 
     constructor (device: Device) {
-        super(device.id);
+        super(device);
 
         if (device.type == 0) {
             this.htmlString = 
@@ -24,7 +24,7 @@ class DeviceCard extends UiComponent {
                         <div class="switch card_control">
                             <label>
                                 OFF
-                                <input type="checkbox" id="control_${device.id}" ${(device.state)? "checked": ""}>
+                                <input type="checkbox" id="switch_${device.id}" ${(device.state)? "checked": ""}>
                                 <span class="lever"></span>
                                 ON
                             </label>
@@ -58,7 +58,7 @@ class DeviceCard extends UiComponent {
                         <div class="card_description">${device.description}</div>
 
                         <div class="range-field card_control">
-                            <input type="range" id="control_${device.id}" min="0" max="100" value="${device.state * 100}"/>
+                            <input type="range" id="slider_${device.id}" min="0" max="100" value="${device.state * 100}"/>
                         </div>
                     </div>
                 </div>
@@ -72,9 +72,14 @@ class DeviceCard extends UiComponent {
         }
     }
 
+    /**
+     * Agrega en el parent el código HTML que define a este componente 
+     * e inicializa el dropdown que contiene la card
+     */
     attach (parent: HTMLElement): void {
         parent.innerHTML += this.htmlString;
 
+        // Se inicializa el dropdown de las cards
         let dropdowns = document.querySelectorAll('.dropdown-trigger');
         let instances = M.Dropdown.init(dropdowns, {});
     }
