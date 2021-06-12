@@ -1,3 +1,6 @@
+declare var M;
+
+
 class Main  implements EventListenerObject, GETResponseListener {
     myFramework: MyFramework;
     clicks: number = 0;
@@ -74,4 +77,8 @@ window.onload = function () {
     let main : Main = new Main();
 
     main.main();
+
+
+    var elems = document.querySelectorAll('.dropdown-trigger');
+    var instances = M.Dropdown.init(elems, {});
 }

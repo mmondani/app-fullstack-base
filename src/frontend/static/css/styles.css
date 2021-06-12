@@ -8,3 +8,66 @@ body {
 main {
     flex: 1 0 auto;
 }
+
+.card {
+    border-radius: 15px;
+}
+
+.card .card-content{
+    padding: 12px;
+}
+
+.card_title {
+    font-size: 21px;
+    text-align: center;
+    margin-top: 10px;
+    font-weight: bold;
+}
+
+.card_description {
+    font-style: italic;
+    margin-top: 20px;
+}
+
+.card_icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: lightblue;
+    width: 60px;
+    height: 60px;
+    margin: 0 auto;
+    border-radius: 60px;
+}
+
+.card_icon img {
+    width: 80%;
+    height: 80%;
+}
+
+
+.card_dots {
+    text-align: right;
+    width: 100%;
+}
+
+.card_dots img {
+    width: 30px;
+    height: 30px;
+}
+
+
+.card_control {
+    margin-top: 25px;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.card_control label {
+    color: white;
+}
+
+.card_control input[type=range] {
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
