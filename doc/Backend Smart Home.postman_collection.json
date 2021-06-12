@@ -1,0 +1,147 @@
+{
+	"info": {
+		"_postman_id": "375dbe86-6a40-46e2-a681-4c4fd10647b4",
+		"name": "Backend Smart Home",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "GET todos los devices",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8000/devices",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"devices"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET un device",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8000/devices/1",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"devices",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Cambiar state de un device",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"id\": 5,\n    \"state\": 0.55\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8000/devices/state",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"devices",
+						"state"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Crear nuevo device",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"device nuevo\",\n    \"description\": \"algo nuevo\",\n    \"type\": 0\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8000/devices",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"devices"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Modificar un device",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"id\": 6,\n    \"name\": \"device modificado\",\n    \"description\": \"cambio algo\",\n    \"state\": 1.0\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8000/devices",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"devices"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Eliminar un device",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "localhost:8000/devices/99",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"devices",
+						"99"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
