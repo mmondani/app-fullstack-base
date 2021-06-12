@@ -166,31 +166,323 @@ Completá todos los detalles sobre cómo armaste el frontend, sus interacciones,
 
 ### Backend
 
-Completá todos los detalles de funcionamiento sobre el backend, sus interacciones con el cliente web, la base de datos, etc.
+El backend implementa una API REST. La lógica relacionada al CRUD de los devices se divide en tres capas:
+- devices/model.js: contiene las funciones que interactuan directamente con la fuente de datos. En este caso los datos se obtienen de un archivo local y todos los cambios se mantienen en RAM, no se vuelven a persistir.
+- devices/middleware.js: contiene funciones encargadas de chequear la validez en cuanto a formato de los requests. Estas funciones van a ser llamadas al procesar los requests antes de efectivamente ejecutar la función que implementa la lógica de ese endpoint
+- devices/controller.js: contiene las funciones que implementan la lógica propiamente dicha del endpoint.
 
 <details><summary><b>Ver los endpoints disponibles</b></summary><br>
 
-Completá todos los endpoints del backend con los metodos disponibles, los headers y body que recibe, lo que devuelve, ejemplos, etc.
+<summary>1) Obtener todos los dispositivos</summary>
+<details>
 
-1) Devolver el estado de los dispositivos.
+* **URL:** /devices
 
-```json
-{
-    "method": "get",
-    "request_headers": "application/json",
-    "request_body": "",
-    "response_code": 200,
-    "request_body": {
-        "devices": [
-            {
-                "id": 1,
-                "status": true,
-                "description": "Kitchen light"
-            }
-        ]
-    },
-}
-``` 
+* **Método:** `GET`
+  
+*  **Parámetros URL:** -
+
+*  **Body:** -
+
+* **Respuesta exitosa:**
+
+  * **Código:** 200 <br />
+    **Body:** array con todos los dispositivos
+    <br>
+    *Ejemplo*
+    ```json
+    [
+        {
+            "id": 1,
+            "name": "Lámpara 1",
+            "description": "Luz Living",
+            "state": 1,
+            "type": 0
+        },
+        {
+            "id": 2,
+            "name": "Lámpara 2",
+            "description": "Luz Cocina",
+            "state": 0,
+            "type": 0
+        }
+    ]
+    ```
+ 
+* **Respuesta fallida:**
+
+  * **Código:** 500 <br />
+    **Body:** -
+</details>
+
+<summary>2) Obtener un dispositivo</summary>
+<details>
+
+* **URL:** /devices/:id
+
+* **Método:** `GET`
+  
+*  **Parámetros URL:**
+ 
+   `id=[number]`: ID del device que se está consultando.
+
+*  **Body:** -
+
+* **Respuesta exitosa:**
+
+  * **Código:** 200 <br />
+    **Body:** device con ID id
+    <br>
+    *Ejemplo*
+    ```json
+    {
+        "id": 1,
+        "name": "Lámpara 1",
+        "description": "Luz Living",
+        "state": 1,
+        "type": 0
+    }
+    ```
+ 
+* **Respuesta fallida:**
+
+  * **Código:** 400 <br />
+    **Body:** objeto indicando el error. Posibles errores:<br />
+                - No se encuentra el id<br />
+    <br>
+    *Ejemplo*
+    ```json
+    {
+        "errores": ["No se encuentra el id"]
+    }
+    ```
+</details>
+
+<summary>3) Modificar el estado de un dispositivo</summary>
+<details>
+
+* **URL:** /devices/state
+
+* **Método:** `POST`
+  
+*  **Parámetros URL:** -
+
+*  **Body:**
+   
+    **Obligatorios:**
+ 
+   `id=[number]`: ID del device.<br/>
+   `state=[number]`: número entre 0.0 y 1.0 que indica el estado del device.
+   <br/>
+   *Ejemplo*
+    ```json
+    {
+        "id": 1,
+        "state": 0.7
+    }
+    ```
+
+* **Respuesta exitosa:**
+
+  * **Código:** 200 <br />
+    **Body:** device con el nuevo ID
+    <br>
+    *Ejemplo*
+    ```json
+    {
+        "id": 1,
+        "name": "Lámpara 1",
+        "description": "Luz Living",
+        "state": 0.7,
+        "type": 0
+    }
+    ```
+ 
+* **Respuesta fallida:**
+
+  * **Código:** 400 <br />
+    **Body:** objeto indicando el error. Posibles errores:<br />
+                - No se encuentra el id<br />
+                - Falta el campo id<br />
+                - Falta el campo state<br />
+                - state debe ser un número entre 0.0 y 1.0<br />
+    <br>
+    *Ejemplo*
+    ```json
+    {
+        "errores": ["No se encuentra el id"]
+    }
+    ```
+</details>
+
+<summary>4) Crear un nuevo dispositivo</summary>
+<details>
+
+* **URL:** /devices
+
+* **Método:** `POST`
+  
+*  **Parámetros URL:** -
+
+*  **Body:**
+   
+    **Obligatorios:**
+ 
+   `name=[string]`: nombre del nuevo device.<br/>
+   `description=[string]`: descripción del nuevo device.<br/>
+   `type=[number]`: tipo de dispositivo. 0 para dispositivo ON-OFF, 1 para dispositivo dimerizable.<br/>
+   <br/>
+   *Ejemplo*
+    ```json
+    {
+        "name": "nombre",
+        "description": "descripción",
+        "type": 1
+    }
+    ```
+
+* **Respuesta exitosa:**
+
+  * **Código:** 200 <br />
+    **Body:** device creado
+    <br>
+    *Ejemplo*
+    ```json
+    {
+        "id": 1,
+        "name": "Lámpara 1",
+        "description": "Luz Living",
+        "state": 0.7,
+        "type": 0
+    }
+    ```
+ 
+* **Respuesta fallida:**
+
+  * **Código:** 500 <br />
+    **Body:** -
+
+  * **Código:** 400 <br />
+    **Body:** objeto indicando el error. Posibles errores:<br />
+                - Falta el campo name<br />
+                - Falta el campo description<br />
+                - Falta el campo type<br />
+                - type debe valer 0 o 1<br />
+    <br>
+    *Ejemplo*
+    ```json
+    {
+        "errores": ["type debe valer 0 o 1"]
+    }
+    ```
+</details>
+
+<summary>5) Modificar un dispositivo existente</summary>
+<details>
+
+* **URL:** /devices
+
+* **Método:** `PATCH`
+  
+*  **Parámetros URL:** -
+
+*  **Body:**
+   
+    **Obligatorios:**
+ 
+   `id=[number]`: ID del device a modificar.<br/>
+   `name=[string]`: nuevo nombre del device.<br/>
+   `description=[string]`: nueva descripción del device.<br/>
+   `state=[number]`: número entre 0.0 y 1.0 que indica el nuevo estado del device.<br/>
+   <br/>
+   *Ejemplo*
+    ```json
+    {
+        "id": 34534534
+        "name": "nombre",
+        "description": "descripción",
+        "state": 1
+    }
+    ```
+
+* **Respuesta exitosa:**
+
+  * **Código:** 200 <br />
+    **Body:** device modificado
+    <br>
+    *Ejemplo*
+    ```json
+    {
+        "id": 34534534,
+        "name": "nombre",
+        "description": "descripción",
+        "state": 1,
+        "type": 0
+    }
+    ```
+ 
+* **Respuesta fallida:**
+
+  * **Código:** 500 <br />
+    **Body:** -
+
+  * **Código:** 400 <br />
+    **Body:** objeto indicando el error. Posibles errores:<br />
+                - No se encuentra el id<br />
+                - Falta el campo id<br />
+                - Falta el campo name<br />
+                - Falta el campo description<br />
+                - Falta el campo state<br />
+                - state debe ser un número entre 0.0 y 1.0<br />
+    <br>
+    *Ejemplo*
+    ```json
+    {
+        "errores": ["No se encuentra el id"]
+    }
+    ```
+</details>
+
+
+<summary>6) Eliminar un dispositivo</summary>
+<details>
+
+* **URL:** /devices/:id
+
+* **Método:** `DELETE`
+  
+*  **Parámetros URL:**
+ 
+   `id=[number]`: ID del device que se quiere eliminar.
+
+*  **Body:** -
+
+* **Respuesta exitosa:**
+
+  * **Código:** 200 <br />
+    **Body:** ID eliminado
+    <br>
+    *Ejemplo*
+    ```json
+    {
+        "id": 1,
+    }
+    ```
+ 
+* **Respuesta fallida:**
+
+  * **Código:** 400 <br />
+    **Body:** objeto indicando el error. Posibles errores:<br />
+                - No se encuentra el id<br />
+    <br>
+    *Ejemplo*
+    ```json
+    {
+        "errores": ["No se encuentra el id"]
+    }
+    ```
+</details>
+
 
 </details>
 

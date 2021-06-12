@@ -218,6 +218,7 @@ module.exports = (app) => {
      *      Código: 400
      *      Body: objeto indicando el/los error/es. 
      *            Posibles errores:
+     *              - No se encuentra el id
      *              - Falta el campo id
      *              - Falta el campo name
      *              - Falta el campo description
