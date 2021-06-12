@@ -30,6 +30,18 @@ exports.getDeviceById = (id) => {
 }
 
 
+/**
+ * Modifica el state del device con ID id.
+ * @param {object} data objeto que contiene el id del device a modificar y el nuevo state. Por ejemplo:
+ * 
+ *      {
+ *          "id": 1,
+ *          "state": 0.5
+ *      }
+ * 
+ * @returns retorna una Promise para que quede preparado para cuando los devices
+ * se obtengan de una base de datos.
+ */
 exports.setState = (data) => {
     return new Promise ((resolve, reject) => {
         let devicesFiltered = devices.filter(device => device.id === data.id);
@@ -42,3 +54,6 @@ exports.setState = (data) => {
             reject();
     });
 }
+
+
+exports.newDevice

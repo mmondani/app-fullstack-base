@@ -34,7 +34,19 @@ exports.getById = async (req, res) => {
     }
 }
 
-
+/**
+ * Modifica el state del device con ID id. EN el body debe haber un objeto con el siguiente formato:
+ * 
+ *      {
+ *          "id": 1,
+ *          "state": 0.5
+ *      }
+ * 
+ * Si la operación es exitosa, reotrna un código 200 y el device en cuestión en el body.
+ * Si la operación falla, retorna un código 400.
+ * @param {*} req objeto del request realizado
+ * @param {*} res objeto del response al request
+ */
 exports.setState = async (req, res) => {
     try {
         let device = await DeviceModel.setState(req.body);

@@ -1,4 +1,18 @@
 
+/**
+ * Comprueba que el request para setear el state de un device tenga en su body un objeto de la forma:
+ * 
+ *      {
+ *          "id": 1
+ *          "state": 1.0
+ *      }
+ * 
+ * 
+ * @param {*} req objeto del request realizado
+ * @param {*} res objeto del response al request
+ * @param {*} next llama a la siguiente función en el array de callbacks asociado al endpoint
+ * @returns 
+ */
 exports.hasSetStateValidFields = (req, res, next) => {
     let errors = [];
 
