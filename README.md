@@ -171,6 +171,8 @@ El backend implementa una API REST. La lógica relacionada al CRUD de los device
 - devices/middleware.js: contiene funciones encargadas de chequear la validez en cuanto a formato de los requests. Estas funciones van a ser llamadas al procesar los requests antes de efectivamente ejecutar la función que implementa la lógica de ese endpoint
 - devices/controller.js: contiene las funciones que implementan la lógica propiamente dicha del endpoint.
 
+En la carpeta **doc** se va a encontrar el archivo *Backend Smart Home.postman_collection.json* el cual es una colección de Postman con ejemplos de requests a los endpoints que a continuación se explican.
+
 <details><summary><b>Ver los endpoints disponibles</b></summary><br>
 
 <summary>1) Obtener todos los dispositivos</summary>
