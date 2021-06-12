@@ -55,5 +55,32 @@ exports.setState = (data) => {
     });
 }
 
+/**
+ * Crea un nuevo device
+ * @param {object} data objeto que contiene los datos para crear un nuevo device.
+ * Debe tener la siguiente forma (por ejemplo):
+ * 
+ *      {
+ *          "name": "nombre",
+ *          "description": "descripción",
+ *          "type": 1
+ *      }
+ * 
+ * @returns retorna una Promise para que quede preparado para cuando los devices
+ * se obtengan de una base de datos.
+ */
+exports.newDevice = (data) => {
+    return new Promise ((resolve, reject) => {
+        let device = {
+            name: data.name,
+            description: data.description,
+            type: data.type,
+            id: Date.now(),
+            state: 0.0
+        }
 
-exports.newDevice
+        devices.push(device);
+
+        resolve(device);
+    });
+}

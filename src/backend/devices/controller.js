@@ -35,7 +35,7 @@ exports.getById = async (req, res) => {
 }
 
 /**
- * Modifica el state del device con ID id. EN el body debe haber un objeto con el siguiente formato:
+ * Modifica el state del device con ID id. En el body debe haber un objeto con el siguiente formato:
  * 
  *      {
  *          "id": 1,
@@ -54,5 +54,30 @@ exports.setState = async (req, res) => {
     }
     catch (error) {
         res.status(400).send({errores: ["No se encuentra el id"]});
+    }
+}
+
+
+/**
+ * Crea un nuevo device. En el body debe haber un objeto con el siguiente formato:
+ * 
+ *      {
+ *          "name": "nombre",
+ *          "description": "descripción",
+ *          "type": 1
+ *      }
+ * 
+ * Si la operación es exitosa, reotrna un código 200 y el device creado.
+ * Si la operación falla, retorna un código 500.
+ * @param {*} req objeto del request realizado
+ * @param {*} res objeto del response al request
+ */
+exports.newDevice = async (req, res) => {
+    try {
+        let device = await DeviceModel.newDevice(req.body);
+        res.status(200).send(device);
+    }
+    catch (error) {
+        res.status(500).send();
     }
 }

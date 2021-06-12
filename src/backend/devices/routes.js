@@ -79,7 +79,7 @@ module.exports = (app) => {
     /**
      * Permite modificar el estado del deivce con ID id
      *
-     * Parámetros URL:
+     * Parámetros URL: -
      * 
      * Body: 
      *      Campos obligatorios
@@ -118,8 +118,61 @@ module.exports = (app) => {
      *          "errores": ["No se encuentra el id"]
      *      }
      */
-    app.post("/devices", [
+    app.post("/devices/state", [
         DeviceMiddleware.hasSetStateValidFields,
         DeviceController.setState
     ]);
+
+
+    /**
+     * Permite crear un nuevo device
+     *
+     * Parámetros URL: -
+     * 
+     * Body: 
+     *      Campos obligatorios
+     *          name [string]: nombre del nuevo device
+     *          description [string]: descripción del nuevo device
+     *          type [numer]: tipo de dispositivo. 0 para dispositivo ON-OFF, 1 para dispositivo dimerizable
+     * 
+     *      Ejemplo:
+     *      {
+     *          "name": "nombre",
+     *          "description": "descripción",
+     *          "type": 1
+    *       }
+     * 
+     * Respuesta existosa:
+     *      Código: 200
+     *      Body: device creado
+     * 
+     *      Ejemplo:
+     *      {
+     *          "id": 1,
+     *          "name": "Lámpara 1",
+     *          "description": "Luz Living",
+     *          "state": 0.7,
+     *          "type": 0
+     *      }
+     * 
+     * Respuesta fallida:
+     *      Código: 500
+     *      Body: -
+     * 
+     *      Código: 400
+     *      Body: objeto indicando el/los error/es. 
+     *            Posibles errores:
+     *              - Falta el campo name
+     *              - Falta el campo description
+     *              - Falta el campo type
+     *              - type debe valer 0 o 1
+     * 
+     *      {
+     *          "errores": ["No se encuentra el id"]
+     *      }
+     */
+    app.post("/devices", [
+        DeviceMiddleware.hasNewDeviceValidFields,
+        DeviceController.newDevice
+    ])
 }
