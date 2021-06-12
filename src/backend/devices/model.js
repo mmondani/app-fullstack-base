@@ -84,3 +84,37 @@ exports.newDevice = (data) => {
         resolve(device);
     });
 }
+
+
+/**
+ * Modifica uno o varios campos de un device ya existente
+ * @param {object} data objeto que contiene los datos para modificar el device.
+ * Debe tener la siguiente forma (por ejemplo):
+ * 
+ *      {
+ *          "id": 245997,
+ *          "name": "nombre",
+ *          "description": "descripción",
+ *          "state": 0.3
+ *      }
+ * 
+ * @returns retorna una Promise para que quede preparado para cuando los devices
+ * se obtengan de una base de datos.
+ */
+exports.modifyDevice = (data) => {
+    return new Promise (async (resolve, reject) => {
+
+        try {
+            let device = await this.getDeviceById(parseInt(data.id));
+
+            device.name = data.name;
+            device.description = data.description;
+            device.state = data.state;
+
+            resolve(device)
+        }
+        catch (error) {
+            reject("No existe el dispositivo")
+        }
+    });
+}

@@ -140,7 +140,7 @@ module.exports = (app) => {
      *          "name": "nombre",
      *          "description": "descripción",
      *          "type": 1
-    *       }
+     *      }
      * 
      * Respuesta existosa:
      *      Código: 200
@@ -168,11 +168,68 @@ module.exports = (app) => {
      *              - type debe valer 0 o 1
      * 
      *      {
-     *          "errores": ["No se encuentra el id"]
+     *          "errores": ["type debe valer 0 o 1"]
      *      }
      */
     app.post("/devices", [
         DeviceMiddleware.hasNewDeviceValidFields,
         DeviceController.newDevice
+    ])
+
+
+
+   /**
+     * Permite modificar un device ya existente
+     *
+     * Parámetros URL: -
+     * 
+     * Body: 
+     *      Campos obligatorios
+     *          id [number]: ID del device a modificar
+     *          name [string]: nuevo nombre del device
+     *          description [string]: nueva descripción del device
+     *          state [numer]: número entre 0.0 y 1.0 que indica el nuevo estado del device
+     * 
+     *      Ejemplo:
+     *      {
+     *          "id": 34534534
+     *          "name": "nombre",
+     *          "description": "descripción",
+     *          "state": 1
+     *      }
+     * 
+     * Respuesta existosa:
+     *      Código: 200
+     *      Body: device modificado
+     * 
+     *      Ejemplo:
+     *      {
+     *          "id": 34534534,
+     *          "name": "nombre",
+     *          "description": "descripción",
+     *          "state": 1,
+     *          "type": 0
+     *      }
+     * 
+     * Respuesta fallida:
+     *      Código: 500
+     *      Body: -
+     * 
+     *      Código: 400
+     *      Body: objeto indicando el/los error/es. 
+     *            Posibles errores:
+     *              - Falta el campo id
+     *              - Falta el campo name
+     *              - Falta el campo description
+     *              - Falta el campo state
+     *              - state debe ser un número entre 0.0 y 1.0
+     * 
+     *      {
+     *          "errores": ["No se encuentra el id"]
+     *      }
+     */
+    app.patch("/devices", [
+        DeviceMiddleware.hasModifyDeviceValidFields,
+        DeviceController.modifyDevice
     ])
 }

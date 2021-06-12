@@ -74,3 +74,47 @@ exports.hasSetStateValidFields = (req, res, next) => {
     else
         return next();
 }
+
+
+/**
+ * Comprueba que el request para modificar un device tenga en su body un objeto de la forma:
+ * 
+ *      {
+ *          "id": 245997,
+ *          "name": "nombre",
+ *          "description": "descripción",
+ *          "state": 0.3
+ *      }
+ * 
+ * 
+ * @param {*} req objeto del request realizado
+ * @param {*} res objeto del response al request
+ * @param {*} next llama a la siguiente función en el array de callbacks asociado al endpoint
+ * @returns 
+ */
+ exports.hasModifyDeviceValidFields = (req, res, next) => {
+    let errors = [];
+
+    if (req.body.id == undefined)
+        errors.push("Falta el campo id");
+
+    if (!req.body.name)
+        errors.push("Falta el campo name");
+
+    if (!req.body.description)
+        errors.push("Falta el campo description");
+
+    if (req.body.state != undefined) {
+        let state = parseFloat(req.body.state);
+
+        if (state < 0.0 || state > 1.0)
+            errors.push("state debe ser un número entre 0.0 y 1.0");
+    }
+    else
+        errors.push("Falta el campo state");
+
+    if (errors.length > 0)
+        return res.status(400).send({errores: errors});
+    else
+        return next();
+}

@@ -19,7 +19,7 @@ exports.getAll = async (req, res) => {
 
 /**
  * Devuelve el device cuyo ID es igual a req.params.id.
- * Si la operación es exitosa, reotrna un código 200 y el device en cuestión en el body.
+ * Si la operación es exitosa, retorna un código 200 y el device en cuestión en el body.
  * Si la operación falla, retorna un código 400.
  * @param {*} req objeto del request realizado
  * @param {*} res objeto del response al request
@@ -42,7 +42,7 @@ exports.getById = async (req, res) => {
  *          "state": 0.5
  *      }
  * 
- * Si la operación es exitosa, reotrna un código 200 y el device en cuestión en el body.
+ * Si la operación es exitosa, retorna un código 200 y el device en cuestión en el body.
  * Si la operación falla, retorna un código 400.
  * @param {*} req objeto del request realizado
  * @param {*} res objeto del response al request
@@ -67,7 +67,7 @@ exports.setState = async (req, res) => {
  *          "type": 1
  *      }
  * 
- * Si la operación es exitosa, reotrna un código 200 y el device creado.
+ * Si la operación es exitosa, retorna un código 200 y el device creado.
  * Si la operación falla, retorna un código 500.
  * @param {*} req objeto del request realizado
  * @param {*} res objeto del response al request
@@ -79,5 +79,34 @@ exports.newDevice = async (req, res) => {
     }
     catch (error) {
         res.status(500).send();
+    }
+}
+
+
+/**
+ * Modifica los campos de un device existente. En el body debe haber un objeto con el siguiente formato:
+ * 
+ *      {
+ *          "id": 245997,
+ *          "name": "nombre",
+ *          "description": "descripción",
+ *          "state": 0.3
+ *      }
+ * 
+ * Si la operación es exitosa, retorna un código 200 y el device modificado.
+ * Si la operación falla, retorna un código 500 o un 400 si no encuentra el device
+ * @param {*} req objeto del request realizado
+ * @param {*} res objeto del response al request
+ */
+exports.modifyDevice = async (req, res) => {
+    try {
+        let device = await DeviceModel.modifyDevice(req.body);
+        res.status(200).send(device);
+    }
+    catch (error) {
+        if (error == "No existe el dispositivo")
+            res.status(400).send({errores:["No existe el dispositivo"]});
+        else 
+            res.status(500).send();
     }
 }
