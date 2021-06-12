@@ -25,68 +25,75 @@ class Main  implements EventListenerObject, GETResponseListener, POSTResponseLis
         
         let elem = <HTMLInputElement>this.myFramework.getElementByEvent(evt);
 
-        /**
-         * Los elemenos HTML que están dentro de la card de un device tienen ids
-         * formados de la siguiente forma:
-         *      accion_idDelDevice
-         * 
-         * Por lo tanto, a partir del id del elemento HTML, se puede encontrar qué acción
-         * se quiere hacer y sobre qué id de dispositivo
-         */
-        if (elem.id.includes("_")) {
-            let elems = elem.id.split("_");
-            let action = elems[0];
-            let deviceId = parseInt(elems[1]);
-            let device = this.getDeviceById(deviceId);
-            let uiComponent = this.getUiComponentById(deviceId);
 
-            if (evt.type === "click") {
-                if (action === "modify") {
-                    console.log ("modify device id = " + deviceId);
-                }
-                else if (action === "delete") {
-                    this.myFramework.requestDELETE("/devices/" + deviceId, this, {});
-                }
-                else if (action === "switch") {
-                    device.state = (elem.checked)? 1 : 0;
+        if (evt.type === "click") {
+            if (elem.id === "newDevice") {
+                // Se limpian los inputs del modal para crear dispostivios
+                let nameInput = <HTMLInputElement>this.myFramework.getElementById("modal_new_device_name");
+                let descriptionInput = <HTMLInputElement>this.myFramework.getElementById("modal_new_device_description");
+                let typeInput = <HTMLInputElement>this.myFramework.getElementById("modal_new_device_type");
 
-                    let data = {"id": deviceId, "state": device.state}
-                    this.myFramework.requestPOST("/devices/state", this, data);
-                }
-                else if (action === "slider") {
-                    device.state = parseInt(elem.value)/100;
+                nameInput.value = "";
+                descriptionInput.value = "";
+                typeInput.value = "0";
 
-                    let data = {"id": deviceId, "state": device.state}
-                    this.myFramework.requestPOST("/devices/state", this, data);
+                // Se muestra el modal 
+                let modal = <any>document.getElementById("modal_new_device");
+                let instance = M.Modal.getInstance(modal)
+                instance.open();
+            }
+            else if (elem.id === "modal_new_device_create") {
+                // Se obtienen los valores de cada uno de los campos
+                let name = (<HTMLInputElement>this.myFramework.getElementById("modal_new_device_name")).value;
+                let description = (<HTMLInputElement>this.myFramework.getElementById("modal_new_device_description")).value;
+                let type = parseInt((<HTMLInputElement>this.myFramework.getElementById("modal_new_device_type")).value);
+
+                if (name !== "" && description !== "") {
+                    let newDevice = {
+                        name: name,
+                        description: description,
+                        type: type
+                    };
+
+                    this.myFramework.requestPOST("/devices", this, newDevice);
                 }
             }
-            /*
-            if (elem.id.startsWith("switch")) {
-                let idDispo: number = parseInt(elem.id.split("_")[1]);
-
-                this.listaDispositivos.forEach(disp => {
-                    if (disp.id == idDispo) {
-                        disp.state = elem.checked;
-
-                        //let data = {"id": disp.id, "status": disp.state};
-                        //this.myFramework.requestPOST("/devices", this, data);
-
-                        if (disp.state)
-                            alert("Se encendió el dispositivo " + disp.name);
-                        else
-                            alert("Se apagó el dispositivo " + disp.name);
+            else {
+                /**
+                 * Los elemenos HTML que están dentro de la card de un device tienen ids
+                 * formados de la siguiente forma:
+                 *      accion_idDelDevice
+                 * 
+                 * Por lo tanto, a partir del id del elemento HTML, se puede encontrar qué acción
+                 * se quiere hacer y sobre qué id de dispositivo
+                 */
+                if (elem.id.includes("_")) {
+                    let elems = elem.id.split("_");
+                    let action = elems[0];
+                    let deviceId = parseInt(elems[1]);
+                    let device = this.getDeviceById(deviceId);
+                    let uiComponent = this.getUiComponentById(deviceId);
+        
+                    if (evt.type === "click") {
+                        if (action === "modify") {
+                            console.log ("modify device id = " + deviceId);
+                        }
+                        else if (action === "delete") {
+                            this.myFramework.requestDELETE("/devices/" + deviceId, this, {});
+                        }
+                        else if (action === "switch") {
+                            device.state = (elem.checked)? 1 : 0;
+        
+                            let data = {"id": deviceId, "state": device.state}
+                            this.myFramework.requestPOST("/devices/state", this, data);
+                        }
+                        else if (action === "slider") {
+                            device.state = parseInt(elem.value)/100;
+        
+                            let data = {"id": deviceId, "state": device.state}
+                            this.myFramework.requestPOST("/devices/state", this, data);
+                        }
                     }
-                })
-            }
-            */
-        }
-        else {
-            if (evt.type === "click") {
-                if (elem.id === "newDevice") {
-                    // Se muestra el modal para cargar un nuevo dispositivo
-                    var modal = <any>document.getElementById("modal_new_device");
-                    var instance = M.Modal.getInstance(modal)
-                    instance.open();
                 }
             }
         }
@@ -109,8 +116,20 @@ class Main  implements EventListenerObject, GETResponseListener, POSTResponseLis
         }
     }
 
-    handlePOSTResponse (status: number, response: string): void {
+    handlePOSTResponse (status: number, url: string, response: string): void {
+        if (url.endsWith("devices")){
+            // Es el response de un request para crear un nuevo dispositivo
+            // En response está el nuevo dispositivo. Se lo agrega a la lista de
+            // dispostivos
+            let newDevice: Device = JSON.parse(response);
+            let newCard: UiComponent = new DeviceCard(newDevice);
 
+            this.listaDispositivos.push(newDevice);
+            this.listaComponentes.push(newCard);
+
+            let mainContainerList = document.getElementById("main_container_devices_list");
+            newCard.attach(mainContainerList);
+        }
     }
 
     handleDELETEResponse (status: number, response: string): void {
@@ -175,4 +194,7 @@ window.onload = function () {
     
     var elems = document.querySelectorAll('.modal');
     var instances = M.Modal.init(elems, {});
+
+    elems = document.querySelectorAll('select');
+    var instances = M.FormSelect.init(elems, {});
 }

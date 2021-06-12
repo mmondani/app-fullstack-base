@@ -23,19 +23,36 @@
                 <div class="row" id="main_container_devices_list">
                     
                 </div>
+
+
+                <div id="modal_new_device" class="modal">
+                    <div class="modal-content">
+                        <h4>Agregar dispostivo</h4>
+    
+                        <div class="input-field" style="margin-top: 45px;">
+                            <input placeholder="Nombre del dispositivo" id="modal_new_device_name" type="text" class="validate">
+                            <label for="modal_new_device_name">Nombre</label>
+                        </div>
+    
+                        <div class="input-field" style="margin-top: 35px;">
+                            <input placeholder="Descripción del dispositivo" id="modal_new_device_description" type="text" class="validate">
+                            <label for="modal_new_device_description">Descripción</label>
+                        </div>
+    
+                        <div class="input-field" style="margin-top: 35px;">
+                            <select id="modal_new_device_type">
+                                <option value="0" selected>ON/OFF</option>
+                                <option value="1">Dimerizable</option>
+                            </select>
+                            <label>Tipo de dispositivo</label>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <a id="modal_new_device_cancel" class="modal-close waves-effect waves-green btn-flat">CANCELAR</a>
+                        <a id="modal_new_device_create" class="modal-close waves-effect waves-green btn-flat">CREAR</a>
+                    </div>
+                </div>
             </div>	
-            
-            
-            <div id="modal_new_device" class="modal">
-                <div class="modal-content">
-                    <h4>Agregar dispostivo</h4>
-                    <p>A bunch of text</p>
-                </div>
-                <div class="modal-footer">
-                    <a id="model_new_device_cancel" class="modal-close waves-effect waves-green btn-flat">CANCELAR</a>
-                    <a id="model_new_device_create" class="modal-close waves-effect waves-green btn-flat">CREAR</a>
-                </div>
-            </div>
 
         </main>
 		<!-- Page Footer -->

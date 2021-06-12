@@ -30,9 +30,9 @@ class MyFramework {
         xhr.onreadystatechange = function() {
             if (xhr.readyState == 4) {
                 if (xhr.status == 200)
-                    listener.handlePOSTResponse(xhr.status, xhr.responseText);
+                    listener.handlePOSTResponse(xhr.status, xhr.responseURL, xhr.responseText);
                 else
-                    listener.handlePOSTResponse(xhr.status, null);
+                    listener.handlePOSTResponse(xhr.status, xhr.responseURL, null);
             } 
         }
 
@@ -64,7 +64,7 @@ interface GETResponseListener {
 }
 
 interface POSTResponseListener {
-    handlePOSTResponse (status: number, response: string): void;
+    handlePOSTResponse (status: number, url: string, response: string): void;
 }
 
 interface DELETEResponseListener {
