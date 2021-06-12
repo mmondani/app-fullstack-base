@@ -1,7 +1,7 @@
 declare var M;
 
 
-class Main  implements EventListenerObject, GETResponseListener {
+class Main  implements EventListenerObject, GETResponseListener, POSTResponseListener, DELETEResponseListener {
     myFramework: MyFramework;
     clicks: number = 0;
     listaDispositivos: Array<Device> = [];
@@ -38,13 +38,14 @@ class Main  implements EventListenerObject, GETResponseListener {
             let action = elems[0];
             let deviceId = parseInt(elems[1]);
             let device = this.getDeviceById(deviceId);
+            let uiComponent = this.getUiComponentById(deviceId);
 
             if (evt.type === "click") {
                 if (action === "modify") {
                     console.log ("modify device id = " + deviceId);
                 }
                 else if (action === "delete") {
-                    console.log ("delete device id = " + deviceId);
+                    this.myFramework.requestDELETE("/devices/" + deviceId, this, {});
                 }
                 else if (action === "switch") {
                     device.state = (elem.checked)? 1 : 0;
@@ -112,8 +113,21 @@ class Main  implements EventListenerObject, GETResponseListener {
 
     }
 
+    handleDELETEResponse (status: number, response: string): void {
+        if (status == 200) {
+            // Si se pudo eliminar el device en el backend, se borra la card
+            // que lo representa y se lo elimina del array listaComponentes y listaDispositivos
+            let resp = JSON.parse(response);
+            this.removeDeviceById(resp.id);
+            this.removeUiComponentById(resp.id);
+
+            let elem = document.getElementById("card_" + resp.id);
+            elem.remove();
+        }
+    }
+
     getDeviceById (id: number): Device {
-        let ret = undefined;
+        let ret: Device = undefined;
 
         this.listaDispositivos.forEach(device => {
             if (device.id === id)
@@ -121,6 +135,35 @@ class Main  implements EventListenerObject, GETResponseListener {
         })
 
         return ret;
+    }
+
+    getUiComponentById (id: number): UiComponent {
+        let ret: UiComponent = undefined;
+
+        this.listaComponentes.forEach(uiComponent => {
+            if (uiComponent.device.id === id)
+                ret = uiComponent;
+        })
+
+        return ret;
+    }
+
+    removeDeviceById (id: number): void {
+        for (let i = 0; i < this.listaDispositivos.length; i++) {
+            if (this.listaDispositivos[i].id === id) {
+                this.listaDispositivos.splice(i, 1);
+                break;
+            }
+        }
+    }
+
+    removeUiComponentById (id: number): void {
+        for (let i = 0; i < this.listaComponentes.length; i++) {
+            if (this.listaComponentes[i].device.id === id) {
+                this.listaComponentes.splice(i, 1);
+                break;
+            }
+        }
     }
 }
 

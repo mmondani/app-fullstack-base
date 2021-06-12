@@ -40,6 +40,23 @@ class MyFramework {
         xhr.setRequestHeader("Content-Type", "application/json");
         xhr.send(JSON.stringify(data));
     }
+
+    requestDELETE (url: string, listener: DELETEResponseListener, data: any): void {
+        let xhr: XMLHttpRequest = new XMLHttpRequest;
+
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState == 4) {
+                if (xhr.status == 200)
+                    listener.handleDELETEResponse(xhr.status, xhr.responseText);
+                else
+                    listener.handleDELETEResponse(xhr.status, null);
+            } 
+        }
+
+        xhr.open("DELETE", url, true);
+        xhr.setRequestHeader("Content-Type", "application/json");
+        xhr.send(JSON.stringify(data));
+    }
 }
 
 interface GETResponseListener {
@@ -48,4 +65,8 @@ interface GETResponseListener {
 
 interface POSTResponseListener {
     handlePOSTResponse (status: number, response: string): void;
+}
+
+interface DELETEResponseListener {
+    handleDELETEResponse (status: number, response: string): void;
 }
