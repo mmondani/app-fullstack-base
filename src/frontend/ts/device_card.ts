@@ -1,8 +1,9 @@
-class DeviceCard extends UiComponent {
+class DeviceCard {
+    public device: Device;
+    public htmlString: string;
 
     constructor (device: Device) {
-        super(device);
-
+        this.device = device;
         this.getHtmlString()
     }
 

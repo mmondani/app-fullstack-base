@@ -5,7 +5,7 @@ class Main  implements EventListenerObject, GETResponseListener, POSTResponseLis
     myFramework: MyFramework;
     clicks: number = 0;
     listaDispositivos: Array<Device> = [];
-    listaComponentes: Array<UiComponent> = [];
+    listaComponentes: Array<DeviceCard> = [];
     deviceToModify: Device;
 
     main () {
@@ -90,7 +90,7 @@ class Main  implements EventListenerObject, GETResponseListener, POSTResponseLis
                     let action = elems[0];
                     let deviceId = parseInt(elems[1]);
                     let device = this.getDeviceById(deviceId);
-                    let uiComponent = this.getUiComponentById(deviceId);
+                    let uiComponent = this.getDeviceCardById(deviceId);
         
                     if (evt.type === "click") {
                         if (action === "modify") {
@@ -155,7 +155,7 @@ class Main  implements EventListenerObject, GETResponseListener, POSTResponseLis
             // En response está el nuevo dispositivo. Se lo agrega a la lista de
             // dispostivos
             let newDevice: Device = JSON.parse(response);
-            let newCard: UiComponent = new DeviceCard(newDevice);
+            let newCard: DeviceCard = new DeviceCard(newDevice);
 
             this.listaDispositivos.push(newDevice);
             this.listaComponentes.push(newCard);
@@ -191,7 +191,7 @@ class Main  implements EventListenerObject, GETResponseListener, POSTResponseLis
             originalDevice.description = modifiedDevice.description;
 
             // Se vuelve a dibujar la card del dispositivo
-            let deviceComponent = this.getUiComponentById(originalDevice.id);
+            let deviceComponent = this.getDeviceCardById(originalDevice.id);
             deviceComponent.changeDevice(originalDevice);
         }
     }
@@ -207,8 +207,8 @@ class Main  implements EventListenerObject, GETResponseListener, POSTResponseLis
         return ret;
     }
 
-    getUiComponentById (id: number): UiComponent {
-        let ret: UiComponent = undefined;
+    getDeviceCardById (id: number): DeviceCard {
+        let ret: DeviceCard = undefined;
 
         this.listaComponentes.forEach(uiComponent => {
             if (uiComponent.device.id === id)
