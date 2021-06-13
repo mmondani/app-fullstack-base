@@ -8,4 +8,8 @@ class UiComponent {
 
     attach (parent: HTMLElement): void {
     }
+
+    changeDevice (newDevice: Device): void {
+        
+    }
 }

@@ -1,11 +1,12 @@
 declare var M;
 
 
-class Main  implements EventListenerObject, GETResponseListener, POSTResponseListener, DELETEResponseListener {
+class Main  implements EventListenerObject, GETResponseListener, POSTResponseListener, DELETEResponseListener, PATCHResponseListener {
     myFramework: MyFramework;
     clicks: number = 0;
     listaDispositivos: Array<Device> = [];
     listaComponentes: Array<UiComponent> = [];
+    deviceToModify: Device;
 
     main () {
         this.myFramework = new MyFramework();
@@ -37,7 +38,7 @@ class Main  implements EventListenerObject, GETResponseListener, POSTResponseLis
                 descriptionInput.value = "";
                 typeInput.value = "0";
 
-                // Se muestra el modal 
+                // Se muestra el modal para crear un nuevo dispositivo
                 let modal = <any>document.getElementById("modal_new_device");
                 let instance = M.Modal.getInstance(modal)
                 instance.open();
@@ -58,6 +59,23 @@ class Main  implements EventListenerObject, GETResponseListener, POSTResponseLis
                     this.myFramework.requestPOST("/devices", this, newDevice);
                 }
             }
+            else if (elem.id === "modal_modify_device_modify") {
+                // Se obtienen los valores de cada uno de los campos
+                let name = (<HTMLInputElement>this.myFramework.getElementById("modal_modify_device_name")).value;
+                let description = (<HTMLInputElement>this.myFramework.getElementById("modal_modify_device_description")).value;
+
+                if (name !== "" && description !== "") {
+                    let deviceModified = {
+                        id: this.deviceToModify.id,
+                        name: name,
+                        description: description,
+                        type: this.deviceToModify.type,
+                        state: this.deviceToModify.state
+                    };
+
+                    this.myFramework.requestPATCH("/devices", this, deviceModified);
+                }
+            }
             else {
                 /**
                  * Los elemenos HTML que están dentro de la card de un device tienen ids
@@ -76,7 +94,22 @@ class Main  implements EventListenerObject, GETResponseListener, POSTResponseLis
         
                     if (evt.type === "click") {
                         if (action === "modify") {
-                            console.log ("modify device id = " + deviceId);
+                            // Se guarda en una variable el device que se está modificando para poder recuperarlo
+                            // si finalmente se modifica el device y hay que mandar el PATCH al backend
+                            this.deviceToModify = device;
+
+                            // Se cargan los inputs del modal para modificar el dispositivo
+                            let nameInput = <HTMLInputElement>this.myFramework.getElementById("modal_modify_device_name");
+                            let descriptionInput = <HTMLInputElement>this.myFramework.getElementById("modal_modify_device_description");
+                            
+                            nameInput.value = device.name;
+                            descriptionInput.value = device.description;
+
+
+                            // Se muestra el modal
+                            let modal = <any>document.getElementById("modal_modify_device");
+                            let instance = M.Modal.getInstance(modal)
+                            instance.open();
                         }
                         else if (action === "delete") {
                             this.myFramework.requestDELETE("/devices/" + deviceId, this, {});
@@ -145,6 +178,24 @@ class Main  implements EventListenerObject, GETResponseListener, POSTResponseLis
         }
     }
 
+    handlePATCHResponse (status: number, response: string): void {
+        if (status == 200) {
+            // Es el response de la modificación de alguno de los dispositivo
+            // En el response viene el device como quedó luego de la modificación
+            let modifiedDevice: Device = JSON.parse(response);
+            
+            let originalDevice = this.getDeviceById(modifiedDevice.id);
+
+            // Se actualizan los valores del device en listaDispositivos
+            originalDevice.name = modifiedDevice.name;
+            originalDevice.description = modifiedDevice.description;
+
+            // Se vuelve a dibujar la card del dispositivo
+            let deviceComponent = this.getUiComponentById(originalDevice.id);
+            deviceComponent.changeDevice(originalDevice);
+        }
+    }
+
     getDeviceById (id: number): Device {
         let ret: Device = undefined;
 
@@ -192,9 +243,10 @@ window.onload = function () {
     main.main();
 
     
-    var elems = document.querySelectorAll('.modal');
-    var instances = M.Modal.init(elems, {});
+    // Se inicializan los elementos de Materialize (los modals y los dropdowns que se usan)
+    let elems = document.querySelectorAll('.modal');
+    let instances = M.Modal.init(elems, {});
 
     elems = document.querySelectorAll('select');
-    var instances = M.FormSelect.init(elems, {});
+    instances = M.FormSelect.init(elems, {});
 }

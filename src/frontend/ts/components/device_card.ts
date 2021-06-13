@@ -3,14 +3,18 @@ class DeviceCard extends UiComponent {
     constructor (device: Device) {
         super(device);
 
-        if (device.type == 0) {
+        this.getHtmlString()
+    }
+
+    getHtmlString (): void {
+        if (this.device.type == 0) {
             this.htmlString = 
             `
-            <div class="col s6 m4 l3 xl3" id="card_${device.id}">
+            <div class="col s6 m4 l3 xl3" id="card_${this.device.id}">
                 <div class="card deep-purple darken-3">
                     
                     <div class="card-content white-text">
-                        <div class='card_dots dropdown-trigger' id='dropdown_${device.id}' data-target='dropdown_content_${device.id}'>
+                        <div class='card_dots dropdown-trigger' id='dropdown_${this.device.id}' data-target='dropdown_content_${this.device.id}'>
                             <img src="static/images/dots_white.png">
                         </div>
 
@@ -18,13 +22,13 @@ class DeviceCard extends UiComponent {
                             <img src="static/images/1.png">
                         </div>
                         
-                        <div class="card_title">${device.name}</div>
-                        <div class="card_description">${device.description}</div>
+                        <div class="card_title">${this.device.name}</div>
+                        <div class="card_description">${this.device.description}</div>
 
                         <div class="switch card_control">
                             <label>
                                 OFF
-                                <input type="checkbox" id="switch_${device.id}" ${(device.state)? "checked": ""}>
+                                <input type="checkbox" id="switch_${this.device.id}" ${(this.device.state)? "checked": ""}>
                                 <span class="lever"></span>
                                 ON
                             </label>
@@ -32,21 +36,21 @@ class DeviceCard extends UiComponent {
                     </div>
                 </div>
 
-                <ul id='dropdown_content_${device.id}' class='dropdown-content indigo lighten-4'>
-                    <li><a id="modify_${device.id}">Modificar</a></li>
-                    <li><a id="delete_${device.id}">Eliminar</a></li>
+                <ul id='dropdown_content_${this.device.id}' class='dropdown-content indigo lighten-4'>
+                    <li><a id="modify_${this.device.id}">Modificar</a></li>
+                    <li><a id="delete_${this.device.id}">Eliminar</a></li>
                 </ul>
             </div>
             `
         }
-        else if (device.type == 1) {
+        else if (this.device.type == 1) {
             this.htmlString = 
             `
-            <div class="col s6 m4 l3 xl3" id="card_${device.id}">
+            <div class="col s6 m4 l3 xl3" id="card_${this.device.id}">
                 <div class="card deep-purple darken-3">
                     
                     <div class="card-content white-text">
-                        <div class='card_dots dropdown-trigger' id='dropdown_${device.id}' data-target='dropdown_content_${device.id}'>
+                        <div class='card_dots dropdown-trigger' id='dropdown_${this.device.id}' data-target='dropdown_content_${this.device.id}'>
                             <img src="static/images/dots_white.png">
                         </div>
 
@@ -54,18 +58,18 @@ class DeviceCard extends UiComponent {
                             <img src="static/images/1.png">
                         </div>
                         
-                        <div class="card_title">${device.name}</div>
-                        <div class="card_description">${device.description}</div>
+                        <div class="card_title">${this.device.name}</div>
+                        <div class="card_description">${this.device.description}</div>
 
                         <div class="range-field card_control">
-                            <input type="range" id="slider_${device.id}" min="0" max="100" value="${device.state * 100}"/>
+                            <input type="range" id="slider_${this.device.id}" min="0" max="100" value="${this.device.state * 100}"/>
                         </div>
                     </div>
                 </div>
 
-                <ul id='dropdown_content_${device.id}' class='dropdown-content indigo lighten-4'>
-                    <li><a id="modify_${device.id}">Modificar</a></li>
-                    <li><a id="delete_${device.id}">Eliminar</a></li>
+                <ul id='dropdown_content_${this.device.id}' class='dropdown-content indigo lighten-4'>
+                    <li><a id="modify_${this.device.id}">Modificar</a></li>
+                    <li><a id="delete_${this.device.id}">Eliminar</a></li>
                 </ul>
             </div>
             `
@@ -82,5 +86,16 @@ class DeviceCard extends UiComponent {
         // Se inicializa el dropdown de las cards
         let dropdowns = document.querySelectorAll('.dropdown-trigger');
         let instances = M.Dropdown.init(dropdowns, {});
+    }
+
+    /**
+     * Vuelve a generar el string HTML que representa una card del dispositivo
+     * y reemplaza la card
+     */
+    changeDevice (newDevice: Device): void {
+        this.device = newDevice;
+        this.getHtmlString();
+
+        document.getElementById("card_" + this.device.id).outerHTML = this.htmlString;
     }
 }
