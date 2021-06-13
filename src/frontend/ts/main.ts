@@ -29,11 +29,17 @@ class Main  implements EventListenerObject, GETResponseListener, POSTResponseLis
                 // Se limpian los inputs del modal para crear dispostivios
                 let nameInput = <HTMLInputElement>this.myFramework.getElementById("modal_new_device_name");
                 let descriptionInput = <HTMLInputElement>this.myFramework.getElementById("modal_new_device_description");
-                let typeInput = <HTMLInputElement>this.myFramework.getElementById("modal_new_device_type");
+                let typeInput = <HTMLSelectElement>this.myFramework.getElementById("modal_new_device_type");
+                let iconInput = <HTMLSelectElement>this.myFramework.getElementById("modal_new_device_icon");
 
                 nameInput.value = "";
                 descriptionInput.value = "";
                 typeInput.value = "0";
+                iconInput.value = "1.png";
+
+                // Se lo debe llamar nuevamente para que se actualicen los select
+                let elems = document.querySelectorAll('select');
+                let instances = M.FormSelect.init(elems, {});
 
                 // Se muestra el modal para crear un nuevo dispositivo
                 let modal = <any>document.getElementById("modal_new_device");
@@ -44,13 +50,15 @@ class Main  implements EventListenerObject, GETResponseListener, POSTResponseLis
                 // Se obtienen los valores de cada uno de los campos
                 let name = (<HTMLInputElement>this.myFramework.getElementById("modal_new_device_name")).value;
                 let description = (<HTMLInputElement>this.myFramework.getElementById("modal_new_device_description")).value;
-                let type = parseInt((<HTMLInputElement>this.myFramework.getElementById("modal_new_device_type")).value);
+                let type = parseInt((<HTMLSelectElement>this.myFramework.getElementById("modal_new_device_type")).value);
+                let icon = (<HTMLSelectElement>this.myFramework.getElementById("modal_new_device_icon")).value;
 
                 if (name !== "" && description !== "") {
                     let newDevice = {
                         name: name,
                         description: description,
-                        type: type
+                        type: type,
+                        icon: icon
                     };
 
                     this.myFramework.requestPOST("/devices", this, newDevice);
@@ -60,6 +68,7 @@ class Main  implements EventListenerObject, GETResponseListener, POSTResponseLis
                 // Se obtienen los valores de cada uno de los campos
                 let name = (<HTMLInputElement>this.myFramework.getElementById("modal_modify_device_name")).value;
                 let description = (<HTMLInputElement>this.myFramework.getElementById("modal_modify_device_description")).value;
+                let icon = (<HTMLSelectElement>this.myFramework.getElementById("modal_modify_device_icon")).value;
 
                 if (name !== "" && description !== "") {
                     let deviceModified = {
@@ -67,7 +76,8 @@ class Main  implements EventListenerObject, GETResponseListener, POSTResponseLis
                         name: name,
                         description: description,
                         type: this.deviceToModify.type,
-                        state: this.deviceToModify.state
+                        state: this.deviceToModify.state,
+                        icon: icon
                     };
 
                     this.myFramework.requestPATCH("/devices", this, deviceModified);
@@ -87,7 +97,6 @@ class Main  implements EventListenerObject, GETResponseListener, POSTResponseLis
                     let action = elems[0];
                     let deviceId = parseInt(elems[1]);
                     let device = this.myFramework.getDeviceById(deviceId);
-                    let uiComponent = this.myFramework.getDeviceCardById(deviceId);
         
                     if (evt.type === "click") {
                         if (action === "modify") {
@@ -98,9 +107,15 @@ class Main  implements EventListenerObject, GETResponseListener, POSTResponseLis
                             // Se cargan los inputs del modal para modificar el dispositivo
                             let nameInput = <HTMLInputElement>this.myFramework.getElementById("modal_modify_device_name");
                             let descriptionInput = <HTMLInputElement>this.myFramework.getElementById("modal_modify_device_description");
+                            let iconInput = <HTMLSelectElement>this.myFramework.getElementById("modal_modify_device_icon");
                             
                             nameInput.value = device.name;
                             descriptionInput.value = device.description;
+                            iconInput.value = device.icon;
+
+                            // Se lo debe llamar nuevamente para que se actualicen los select
+                            let elems = document.querySelectorAll('select');
+                            let instances = M.FormSelect.init(elems, {});
 
 
                             // Se muestra el modal
@@ -186,6 +201,7 @@ class Main  implements EventListenerObject, GETResponseListener, POSTResponseLis
             // Se actualizan los valores del device en devicesList
             originalDevice.name = modifiedDevice.name;
             originalDevice.description = modifiedDevice.description;
+            originalDevice.icon = modifiedDevice.icon;
 
             // Se vuelve a dibujar la card del dispositivo
             let deviceComponent = this.myFramework.getDeviceCardById(originalDevice.id);

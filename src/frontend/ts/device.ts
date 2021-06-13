@@ -4,4 +4,5 @@ class Device {
     public description: string;
     public state: number;
     public type: number;
+    public icon: string;
 }

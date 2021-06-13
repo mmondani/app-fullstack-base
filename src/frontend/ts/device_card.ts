@@ -20,7 +20,7 @@ class DeviceCard {
                         </div>
 
                         <div class="card_icon">
-                            <img src="static/images/1.png">
+                            <img src="static/images/${this.device.icon}">
                         </div>
                         
                         <div class="card_title">${this.device.name}</div>
@@ -56,7 +56,7 @@ class DeviceCard {
                         </div>
 
                         <div class="card_icon">
-                            <img src="static/images/1.png">
+                            <img src="static/images/${this.device.icon}">
                         </div>
                         
                         <div class="card_title">${this.device.name}</div>

@@ -24,12 +24,23 @@
                     
                 </div>
 
-
+                <!-- Modal para crear un nuevo dispositivo -->
                 <div id="modal_new_device" class="modal">
                     <div class="modal-content">
                         <h4>Agregar dispostivo</h4>
     
                         <div class="input-field" style="margin-top: 45px;">
+                            <select class="icons" id="modal_new_device_icon">
+                                <option value="1.png" data-icon="static/images/1.png">Iluminación</option>
+                                <option value="2.png" data-icon="static/images/2.png">Audio</option>
+                                <option value="3.png" data-icon="static/images/3.png">Video</option>
+                                <option value="4.png" data-icon="static/images/4.png">Ventilación</option>
+                                <option value="5.png" data-icon="static/images/5.png">Persianas</option>
+                            </select>
+                            <label>Ícono</label>
+                        </div>
+
+                        <div class="input-field" style="margin-top: 35px;">
                             <input placeholder="Nombre del dispositivo" id="modal_new_device_name" type="text" class="validate">
                             <label for="modal_new_device_name">Nombre</label>
                         </div>
@@ -41,7 +52,7 @@
     
                         <div class="input-field" style="margin-top: 35px;">
                             <select id="modal_new_device_type">
-                                <option value="0" selected>ON/OFF</option>
+                                <option value="0">ON/OFF</option>
                                 <option value="1">Dimerizable</option>
                             </select>
                             <label>Tipo de dispositivo</label>
@@ -53,18 +64,30 @@
                     </div>
                 </div>
 
+                <!-- Modal para modificar un dispositivo -->
                 <div id="modal_modify_device" class="modal">
                     <div class="modal-content">
                         <h4>Modificar dispostivo</h4>
 
                         <div class="input-field" style="margin-top: 45px;">
+                            <select class="icons" id="modal_modify_device_icon">
+                                <option value="1.png" data-icon="static/images/1.png">Iluminación</option>
+                                <option value="2.png" data-icon="static/images/2.png">Audio</option>
+                                <option value="3.png" data-icon="static/images/3.png">Video</option>
+                                <option value="4.png" data-icon="static/images/4.png">Ventilación</option>
+                                <option value="5.png" data-icon="static/images/5.png">Persianas</option>
+                            </select>
+                            <label>Ícono</label>
+                        </div>
+                        
+                        <div class="input-field" style="margin-top: 35px;">
                             <input placeholder="Nombre del dispositivo" id="modal_modify_device_name" type="text" class="validate">
-                            <label for="modal_new_device_name">Nombre</label>
+                            <label for="modal_modify_device_name">Nombre</label>
                         </div>
     
                         <div class="input-field" style="margin-top: 35px;">
                             <input placeholder="Descripción del dispositivo" id="modal_modify_device_description" type="text" class="validate">
-                            <label for="modal_new_device_description">Descripción</label>
+                            <label for="modal_modify_device_description">Descripción</label>
                         </div>
 
                     </div>
@@ -73,6 +96,7 @@
                         <a id="modal_modify_device_modify" class="modal-close waves-effect waves-green btn-flat">MODIFICAR</a>
                     </div>
                 </div>
+
             </div>	
 
         </main>
