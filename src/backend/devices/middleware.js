@@ -41,7 +41,8 @@ exports.hasSetStateValidFields = (req, res, next) => {
  *      {
  *          "name": "nombre",
  *          "description": "descripción",
- *          "type": 1
+ *          "type": 1,
+ *          "icon": "1.png"
  *      }
  * 
  * 
@@ -58,6 +59,9 @@ exports.hasSetStateValidFields = (req, res, next) => {
 
     if (!req.body.description)
         errors.push("Falta el campo description");
+
+    if (!req.body.icon)
+        errors.push("Falta el campo icon");
 
     if (req.body.type != undefined) {
         let type = parseInt (req.body.type);
@@ -83,7 +87,8 @@ exports.hasSetStateValidFields = (req, res, next) => {
  *          "id": 245997,
  *          "name": "nombre",
  *          "description": "descripción",
- *          "state": 0.3
+ *          "state": 0.3,
+ *          "icon": "1.png"
  *      }
  * 
  * 
@@ -100,6 +105,9 @@ exports.hasSetStateValidFields = (req, res, next) => {
 
     if (!req.body.name)
         errors.push("Falta el campo name");
+
+    if (!req.body.icon)
+        errors.push("Falta el campo icon");
 
     if (!req.body.description)
         errors.push("Falta el campo description");

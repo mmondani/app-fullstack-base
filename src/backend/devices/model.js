@@ -63,7 +63,8 @@ exports.setState = (data) => {
  *      {
  *          "name": "nombre",
  *          "description": "descripción",
- *          "type": 1
+ *          "type": 1,
+ *          "icon": "2.png"
  *      }
  * 
  * @returns retorna una Promise para que quede preparado para cuando los devices
@@ -76,7 +77,8 @@ exports.newDevice = (data) => {
             description: data.description,
             type: data.type,
             id: Date.now(),
-            state: 0.0
+            state: 0.0,
+            icon: data.icon
         }
 
         devices.push(device);
@@ -95,7 +97,8 @@ exports.newDevice = (data) => {
  *          "id": 245997,
  *          "name": "nombre",
  *          "description": "descripción",
- *          "state": 0.3
+ *          "state": 0.3,
+ *          "icon": "2.png"
  *      }
  * 
  * @returns retorna una Promise para que quede preparado para cuando los devices
@@ -110,6 +113,7 @@ exports.modifyDevice = (data) => {
             device.name = data.name;
             device.description = data.description;
             device.state = data.state;
+            device.icon = data.icon;
 
             resolve(device)
         }

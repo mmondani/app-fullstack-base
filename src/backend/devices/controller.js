@@ -64,7 +64,8 @@ exports.setState = async (req, res) => {
  *      {
  *          "name": "nombre",
  *          "description": "descripción",
- *          "type": 1
+ *          "type": 1,
+ *          "icon": "3.png"
  *      }
  * 
  * Si la operación es exitosa, retorna un código 200 y el device creado.
@@ -90,7 +91,8 @@ exports.newDevice = async (req, res) => {
  *          "id": 245997,
  *          "name": "nombre",
  *          "description": "descripción",
- *          "state": 0.3
+ *          "state": 0.3,
+ *          "icon": "2.png"
  *      }
  * 
  * Si la operación es exitosa, retorna un código 200 y el device modificado.

@@ -199,14 +199,16 @@ En la carpeta **doc** se va a encontrar el archivo *Backend Smart Home.postman_c
             "name": "Lámpara 1",
             "description": "Luz Living",
             "state": 1,
-            "type": 0
+            "type": 0,
+            "icon": "1.png"
         },
         {
             "id": 2,
             "name": "Lámpara 2",
             "description": "Luz Cocina",
             "state": 0,
-            "type": 0
+            "type": 0,
+            "icon": "1.png"
         }
     ]
     ```
@@ -242,7 +244,8 @@ En la carpeta **doc** se va a encontrar el archivo *Backend Smart Home.postman_c
         "name": "Lámpara 1",
         "description": "Luz Living",
         "state": 1,
-        "type": 0
+        "type": 0,
+        "icon": "1.png"
     }
     ```
  
@@ -296,7 +299,8 @@ En la carpeta **doc** se va a encontrar el archivo *Backend Smart Home.postman_c
         "name": "Lámpara 1",
         "description": "Luz Living",
         "state": 0.7,
-        "type": 0
+        "type": 0,
+        "icon": "1.png"
     }
     ```
  
@@ -333,13 +337,15 @@ En la carpeta **doc** se va a encontrar el archivo *Backend Smart Home.postman_c
    `name=[string]`: nombre del nuevo device.<br/>
    `description=[string]`: descripción del nuevo device.<br/>
    `type=[number]`: tipo de dispositivo. 0 para dispositivo ON-OFF, 1 para dispositivo dimerizable.<br/>
+   `icon=[string]`: nombre de la imagen que representa el ícono asociado al device<br/>
    <br/>
    *Ejemplo*
     ```json
     {
         "name": "nombre",
         "description": "descripción",
-        "type": 1
+        "type": 1,
+        "icon": "1.png"
     }
     ```
 
@@ -369,6 +375,7 @@ En la carpeta **doc** se va a encontrar el archivo *Backend Smart Home.postman_c
                 - Falta el campo name<br />
                 - Falta el campo description<br />
                 - Falta el campo type<br />
+                - Falta el campo icon<br />
                 - type debe valer 0 o 1<br />
     <br>
     *Ejemplo*
@@ -396,6 +403,7 @@ En la carpeta **doc** se va a encontrar el archivo *Backend Smart Home.postman_c
    `name=[string]`: nuevo nombre del device.<br/>
    `description=[string]`: nueva descripción del device.<br/>
    `state=[number]`: número entre 0.0 y 1.0 que indica el nuevo estado del device.<br/>
+   `icon=[string]`: nombre de la imagen que representa el ícono asociado al device<br/>
    <br/>
    *Ejemplo*
     ```json
@@ -403,7 +411,8 @@ En la carpeta **doc** se va a encontrar el archivo *Backend Smart Home.postman_c
         "id": 34534534
         "name": "nombre",
         "description": "descripción",
-        "state": 1
+        "state": 1,
+        "icon": "3.png"
     }
     ```
 
@@ -419,7 +428,8 @@ En la carpeta **doc** se va a encontrar el archivo *Backend Smart Home.postman_c
         "name": "nombre",
         "description": "descripción",
         "state": 1,
-        "type": 0
+        "type": 0,
+        "icon": "3.png"
     }
     ```
  
@@ -435,6 +445,7 @@ En la carpeta **doc** se va a encontrar el archivo *Backend Smart Home.postman_c
                 - Falta el campo name<br />
                 - Falta el campo description<br />
                 - Falta el campo state<br />
+                - Falta el campo icon<br />
                 - state debe ser un número entre 0.0 y 1.0<br />
     <br>
     *Ejemplo*

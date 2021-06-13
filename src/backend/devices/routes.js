@@ -27,7 +27,8 @@ module.exports = (app) => {
      *              "name": "Lámpara 1",
      *              "description": "Luz Living",
      *              "state": 1,
-     *              "type": 0
+     *              "type": 0,
+     *              "icon": "1.png"
      *          }
      *      ]
      * 
@@ -58,7 +59,8 @@ module.exports = (app) => {
      *          "name": "Lámpara 1",
      *          "description": "Luz Living",
      *          "state": 1,
-     *          "type": 0
+     *          "type": 0,
+     *          "icon": "1.png"
      *      }
      * 
      * Respuesta fallida:
@@ -102,7 +104,8 @@ module.exports = (app) => {
      *          "name": "Lámpara 1",
      *          "description": "Luz Living",
      *          "state": 0.7,
-     *          "type": 0
+     *          "type": 0,
+     *          "icon": "1.png"
      *      }
      * 
      * Respuesta fallida:
@@ -195,7 +198,8 @@ module.exports = (app) => {
      *          "id": 34534534
      *          "name": "nombre",
      *          "description": "descripción",
-     *          "state": 1
+     *          "state": 1,
+     *          "icon": "1.png"
      *      }
      * 
      * Respuesta existosa:
@@ -208,7 +212,8 @@ module.exports = (app) => {
      *          "name": "nombre",
      *          "description": "descripción",
      *          "state": 1,
-     *          "type": 0
+     *          "type": 0,
+     *          "icon": "1.png"
      *      }
      * 
      * Respuesta fallida:
@@ -223,6 +228,7 @@ module.exports = (app) => {
      *              - Falta el campo name
      *              - Falta el campo description
      *              - Falta el campo state
+     *              - Falta el campo icon
      *              - state debe ser un número entre 0.0 y 1.0
      * 
      *      {
