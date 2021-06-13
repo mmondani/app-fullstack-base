@@ -3,9 +3,6 @@ declare var M;
 
 class Main  implements EventListenerObject, GETResponseListener, POSTResponseListener, DELETEResponseListener, PATCHResponseListener {
     myFramework: MyFramework;
-    clicks: number = 0;
-    listaDispositivos: Array<Device> = [];
-    listaComponentes: Array<DeviceCard> = [];
     deviceToModify: Device;
 
     main () {
@@ -89,8 +86,8 @@ class Main  implements EventListenerObject, GETResponseListener, POSTResponseLis
                     let elems = elem.id.split("_");
                     let action = elems[0];
                     let deviceId = parseInt(elems[1]);
-                    let device = this.getDeviceById(deviceId);
-                    let uiComponent = this.getDeviceCardById(deviceId);
+                    let device = this.myFramework.getDeviceById(deviceId);
+                    let uiComponent = this.myFramework.getDeviceCardById(deviceId);
         
                     if (evt.type === "click") {
                         if (action === "modify") {
@@ -137,11 +134,11 @@ class Main  implements EventListenerObject, GETResponseListener, POSTResponseLis
         if (status == 200) {
             let mainContainerList = document.getElementById("main_container_devices_list");
 
-            this.listaDispositivos = JSON.parse(response);
-            this.listaDispositivos.forEach(dispositivo => {  
+            this.myFramework.devicesList = JSON.parse(response);
+            this.myFramework.devicesList.forEach(dispositivo => {  
                 let newCard = new DeviceCard(dispositivo);
 
-                this.listaComponentes.push(newCard);
+                this.myFramework.deivceCardsList.push(newCard);
 
                 newCard.attach(mainContainerList);
             });
@@ -157,8 +154,8 @@ class Main  implements EventListenerObject, GETResponseListener, POSTResponseLis
             let newDevice: Device = JSON.parse(response);
             let newCard: DeviceCard = new DeviceCard(newDevice);
 
-            this.listaDispositivos.push(newDevice);
-            this.listaComponentes.push(newCard);
+            this.myFramework.devicesList.push(newDevice);
+            this.myFramework.deivceCardsList.push(newCard);
 
             let mainContainerList = document.getElementById("main_container_devices_list");
             newCard.attach(mainContainerList);
@@ -168,10 +165,10 @@ class Main  implements EventListenerObject, GETResponseListener, POSTResponseLis
     handleDELETEResponse (status: number, response: string): void {
         if (status == 200) {
             // Si se pudo eliminar el device en el backend, se borra la card
-            // que lo representa y se lo elimina del array listaComponentes y listaDispositivos
+            // que lo representa y se lo elimina del array deivceCardsList y devicesList
             let resp = JSON.parse(response);
-            this.removeDeviceById(resp.id);
-            this.removeUiComponentById(resp.id);
+            this.myFramework.removeDeviceById(resp.id);
+            this.myFramework.removeUiComponentById(resp.id);
 
             let elem = document.getElementById("card_" + resp.id);
             elem.remove();
@@ -184,55 +181,15 @@ class Main  implements EventListenerObject, GETResponseListener, POSTResponseLis
             // En el response viene el device como quedó luego de la modificación
             let modifiedDevice: Device = JSON.parse(response);
             
-            let originalDevice = this.getDeviceById(modifiedDevice.id);
+            let originalDevice = this.myFramework.getDeviceById(modifiedDevice.id);
 
-            // Se actualizan los valores del device en listaDispositivos
+            // Se actualizan los valores del device en devicesList
             originalDevice.name = modifiedDevice.name;
             originalDevice.description = modifiedDevice.description;
 
             // Se vuelve a dibujar la card del dispositivo
-            let deviceComponent = this.getDeviceCardById(originalDevice.id);
+            let deviceComponent = this.myFramework.getDeviceCardById(originalDevice.id);
             deviceComponent.changeDevice(originalDevice);
-        }
-    }
-
-    getDeviceById (id: number): Device {
-        let ret: Device = undefined;
-
-        this.listaDispositivos.forEach(device => {
-            if (device.id === id)
-                ret = device;
-        })
-
-        return ret;
-    }
-
-    getDeviceCardById (id: number): DeviceCard {
-        let ret: DeviceCard = undefined;
-
-        this.listaComponentes.forEach(uiComponent => {
-            if (uiComponent.device.id === id)
-                ret = uiComponent;
-        })
-
-        return ret;
-    }
-
-    removeDeviceById (id: number): void {
-        for (let i = 0; i < this.listaDispositivos.length; i++) {
-            if (this.listaDispositivos[i].id === id) {
-                this.listaDispositivos.splice(i, 1);
-                break;
-            }
-        }
-    }
-
-    removeUiComponentById (id: number): void {
-        for (let i = 0; i < this.listaComponentes.length; i++) {
-            if (this.listaComponentes[i].device.id === id) {
-                this.listaComponentes.splice(i, 1);
-                break;
-            }
         }
     }
 }

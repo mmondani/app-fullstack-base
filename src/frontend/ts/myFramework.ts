@@ -1,4 +1,8 @@
 class MyFramework {
+    devicesList: Array<Device> = [];
+    deivceCardsList: Array<DeviceCard> = [];
+
+
     getElementById (id: string): HTMLElement {
         return document.getElementById(id);
     }
@@ -73,6 +77,47 @@ class MyFramework {
         xhr.open("PATCH", url, true);
         xhr.setRequestHeader("Content-Type", "application/json");
         xhr.send(JSON.stringify(data));
+    }
+
+
+    getDeviceById (id: number): Device {
+        let ret: Device = undefined;
+
+        this.devicesList.forEach(device => {
+            if (device.id === id)
+                ret = device;
+        })
+
+        return ret;
+    }
+
+    getDeviceCardById (id: number): DeviceCard {
+        let ret: DeviceCard = undefined;
+
+        this.deivceCardsList.forEach(uiComponent => {
+            if (uiComponent.device.id === id)
+                ret = uiComponent;
+        })
+
+        return ret;
+    }
+
+    removeDeviceById (id: number): void {
+        for (let i = 0; i < this.devicesList.length; i++) {
+            if (this.devicesList[i].id === id) {
+                this.devicesList.splice(i, 1);
+                break;
+            }
+        }
+    }
+
+    removeUiComponentById (id: number): void {
+        for (let i = 0; i < this.deivceCardsList.length; i++) {
+            if (this.deivceCardsList[i].device.id === id) {
+                this.deivceCardsList.splice(i, 1);
+                break;
+            }
+        }
     }
 }
 
