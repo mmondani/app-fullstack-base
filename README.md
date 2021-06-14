@@ -152,17 +152,39 @@ En la siguiente ilustración podés ver cómo está organizado el proyecto para 
 
 ## Detalles de implementación 💻
 
-En esta sección podés ver los detalles específicos de funcionamiento del código y que son los siguientes.
+En esta sección se describen los destalles específicos de funcionamiento del código.
 
 <details><summary><b>Mira los detalles de implementación</b></summary><br>
 
 ### Agregar un dispositivo
 
-Completá los pasos para agregar un dispositivo desde el cliente web.
+Para agregar un dispositivo, en el dashboard principal se debe hacer click en el botón `Agregar Dispositivo`.
+
+![dashboard](doc/dashboard.png)
+
+Una vez hecho esto, aparecerá un popup que permite elegir un ícono, un nombre, una descripción y un tipo para el nuevo dispositivo.
+
+![new_device](doc/new_device.png)
+
+Al hacer click en `Crear`, se va a agregar el nuevo dispositivo.
+
+Por otro lado, cualquier dispositivo creado puede ser modificado, permitiendo cambiarle su nombre, su descripción o su ícono. Para modificarlo, se debe hacer hacer click en los 3 puntitos arriba a la derecha de la tarjeta del dispositivo:
+
+![edit_device1](doc/edit_device1.png)
+
+En el menú que se abre, se debe elegir la opción `Modificar`:
+
+![edit_device2](doc/edit_device2.png)
+
+Finalmente, se va a abrir un popup en el que se puede cambiar cualquiera de los datos. Para completar el proceso de modificación se debe presionar el botón `Modificar` del popup.
+
+![edit_device2](doc/edit_device3.png)
+
+Además, en el mismo menú, se puede elegir la opción `Eliminar`, para borrar el dispositivo.
 
 ### Frontend
 
-Completá todos los detalles sobre cómo armaste el frontend, sus interacciones, etc.
+
 
 ### Backend
 
