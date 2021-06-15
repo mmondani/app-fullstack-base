@@ -26,6 +26,8 @@ class Main  implements EventListenerObject, GETResponseListener, POSTResponseLis
 
         if (evt.type === "click") {
             if (elem.id === "newDevice") {
+                // Se hizo click en el botón para Agregar un dispositivo.
+
                 // Se limpian los inputs del modal para crear dispostivios
                 let nameInput = <HTMLInputElement>this.myFramework.getElementById("modal_new_device_name");
                 let descriptionInput = <HTMLInputElement>this.myFramework.getElementById("modal_new_device_description");
@@ -47,6 +49,8 @@ class Main  implements EventListenerObject, GETResponseListener, POSTResponseLis
                 instance.open();
             }
             else if (elem.id === "modal_new_device_create") {
+                // Se hizo click en el botón Crear del modal de nuevo dispositivo
+
                 // Se obtienen los valores de cada uno de los campos
                 let name = (<HTMLInputElement>this.myFramework.getElementById("modal_new_device_name")).value;
                 let description = (<HTMLInputElement>this.myFramework.getElementById("modal_new_device_description")).value;
@@ -65,6 +69,8 @@ class Main  implements EventListenerObject, GETResponseListener, POSTResponseLis
                 }
             }
             else if (elem.id === "modal_modify_device_modify") {
+                // Se hizo click en el botón Modificar del modal para modificar un dispositivo.
+
                 // Se obtienen los valores de cada uno de los campos
                 let name = (<HTMLInputElement>this.myFramework.getElementById("modal_modify_device_name")).value;
                 let description = (<HTMLInputElement>this.myFramework.getElementById("modal_modify_device_description")).value;
@@ -98,46 +104,51 @@ class Main  implements EventListenerObject, GETResponseListener, POSTResponseLis
                     let deviceId = parseInt(elems[1]);
                     let device = this.myFramework.getDeviceById(deviceId);
         
-                    if (evt.type === "click") {
-                        if (action === "modify") {
-                            // Se guarda en una variable el device que se está modificando para poder recuperarlo
-                            // si finalmente se modifica el device y hay que mandar el PATCH al backend
-                            this.deviceToModify = device;
+                    if (action === "modify") {
+                        // Se hizo click en la opción Modificar del dropdown de los tres puntitos de alguna de las cards de dispositivos.
 
-                            // Se cargan los inputs del modal para modificar el dispositivo
-                            let nameInput = <HTMLInputElement>this.myFramework.getElementById("modal_modify_device_name");
-                            let descriptionInput = <HTMLInputElement>this.myFramework.getElementById("modal_modify_device_description");
-                            let iconInput = <HTMLSelectElement>this.myFramework.getElementById("modal_modify_device_icon");
-                            
-                            nameInput.value = device.name;
-                            descriptionInput.value = device.description;
-                            iconInput.value = device.icon;
+                        // Se guarda en una variable el device que se está modificando para poder recuperarlo
+                        // si finalmente se modifica el device y hay que mandar el PATCH al backend
+                        this.deviceToModify = device;
 
-                            // Se lo debe llamar nuevamente para que se actualicen los select
-                            let elems = document.querySelectorAll('select');
-                            let instances = M.FormSelect.init(elems, {});
+                        // Se cargan los inputs del modal para modificar el dispositivo
+                        let nameInput = <HTMLInputElement>this.myFramework.getElementById("modal_modify_device_name");
+                        let descriptionInput = <HTMLInputElement>this.myFramework.getElementById("modal_modify_device_description");
+                        let iconInput = <HTMLSelectElement>this.myFramework.getElementById("modal_modify_device_icon");
+                        
+                        nameInput.value = device.name;
+                        descriptionInput.value = device.description;
+                        iconInput.value = device.icon;
+
+                        // Se lo debe llamar nuevamente para que se actualicen los select
+                        let elems = document.querySelectorAll('select');
+                        let instances = M.FormSelect.init(elems, {});
 
 
-                            // Se muestra el modal
-                            let modal = <any>document.getElementById("modal_modify_device");
-                            let instance = M.Modal.getInstance(modal)
-                            instance.open();
-                        }
-                        else if (action === "delete") {
-                            this.myFramework.requestDELETE("/devices/" + deviceId, this, {});
-                        }
-                        else if (action === "switch") {
-                            device.state = (elem.checked)? 1 : 0;
-        
-                            let data = {"id": deviceId, "state": device.state}
-                            this.myFramework.requestPOST("/devices/state", this, data);
-                        }
-                        else if (action === "slider") {
-                            device.state = parseInt(elem.value)/100;
-        
-                            let data = {"id": deviceId, "state": device.state}
-                            this.myFramework.requestPOST("/devices/state", this, data);
-                        }
+                        // Se muestra el modal
+                        let modal = <any>document.getElementById("modal_modify_device");
+                        let instance = M.Modal.getInstance(modal)
+                        instance.open();
+                    }
+                    else if (action === "delete") {
+                        // Se hizo click en la opción Eliminar del dropdown de los tres puntitos de alguna de las cards de dispositivos
+                        this.myFramework.requestDELETE("/devices/" + deviceId, this, {});
+                    }
+                    else if (action === "switch") {
+                        // Se hizo click en el switch de alguna de las cards
+
+                        device.state = (elem.checked)? 1 : 0;
+    
+                        let data = {"id": deviceId, "state": device.state}
+                        this.myFramework.requestPOST("/devices/state", this, data);
+                    }
+                    else if (action === "slider") {
+                        // Se cambió el valor del slider de alguna de las cards.
+
+                        device.state = parseInt(elem.value)/100;
+    
+                        let data = {"id": deviceId, "state": device.state}
+                        this.myFramework.requestPOST("/devices/state", this, data);
                     }
                 }
             }
@@ -147,6 +158,8 @@ class Main  implements EventListenerObject, GETResponseListener, POSTResponseLis
 
     handleGETResponse(status: number, response: string): void {
         if (status == 200) {
+            // Es un response del GET a /devices. Devuelve la lista completa de dispositivos.
+
             let mainContainerList = document.getElementById("main_container_devices_list");
 
             this.myFramework.devicesList = JSON.parse(response);
@@ -163,7 +176,7 @@ class Main  implements EventListenerObject, GETResponseListener, POSTResponseLis
 
     handlePOSTResponse (status: number, url: string, response: string): void {
         if (url.endsWith("devices")){
-            // Es el response de un request para crear un nuevo dispositivo
+            // Es el response de un POST /devices para crear un nuevo dispositivo
             // En response está el nuevo dispositivo. Se lo agrega a la lista de
             // dispostivos
             let newDevice: Device = JSON.parse(response);
@@ -179,6 +192,7 @@ class Main  implements EventListenerObject, GETResponseListener, POSTResponseLis
 
     handleDELETEResponse (status: number, response: string): void {
         if (status == 200) {
+            // Es un response a un DELETE a /devices/:id
             // Si se pudo eliminar el device en el backend, se borra la card
             // que lo representa y se lo elimina del array deivceCardsList y devicesList
             let resp = JSON.parse(response);
@@ -192,7 +206,7 @@ class Main  implements EventListenerObject, GETResponseListener, POSTResponseLis
 
     handlePATCHResponse (status: number, response: string): void {
         if (status == 200) {
-            // Es el response de la modificación de alguno de los dispositivo
+            // Es el response a PATCH /devicesde la modificación de alguno de los dispositivo
             // En el response viene el device como quedó luego de la modificación
             let modifiedDevice: Device = JSON.parse(response);
             
