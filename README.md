@@ -186,26 +186,26 @@ Además, en el mismo menú de los tres puntitos, se puede elegir la opción `Eli
 
 En `index.html` se establece la estructura básica del dashboard, el cual luego va a ser llenado con los dispositivos. Esta estructura está compuesta por:
 - botón con id `newDevice`: al hacer click se va a mostrar un popup para agregar un dispositivo.
-- `<div>` con id `main_container_devices_list`: va a contener las card que representan a cada uno de los dispotivos.
+- `<div>` con id `main_container_devices_list`: va a contener las card que representan a cada uno de los dispositivos.
 - `<div>` con id `modal_new_device`: el `<div>` usa la clase modal, para representar un popup. Se lo incluye en el HTML ya que solo se lo va a mostrar cuando se lo requiera. Este popup va a ser usado para crear un nuevo dispositivo.
 - `<div>` con id `modal_modify_device`: al igual que `modal_new_device` usa la clase modal y va a representar un popup que se va a mostrar cuando se quiera modificar un dispositivo existente.
 
-La **entidad "dispositivo"** va a ser representado en el frontend a través de la clase `Device` (archivo `device.ts`). Esta clase contiene los siguientes campos:
+La **entidad "dispositivo"** va a ser representada en el frontend a través de la clase `Device` (archivo `device.ts`). Esta clase contiene los siguientes campos:
 - `id`: es de tipo number y es un número único asignado por el backend que identifica a ese dispositivo.
 - `name`: es de tipo string y es el nombre del dispositivo.
 - `description`: es de tipo string y es la descripción del dispositivo.
-- `state`: es de tipo number y tiene un número entre 0.0 y 1.0. En el caso de los dispositivos de tipo On/Off esta variable va a valer 0.0 o 1.0. En el caso de los dimerizables, va a valer cualquier número entre 0.0 y 1.0.
+- `state`: es de tipo number y va a contener un número entre 0.0 y 1.0. En el caso de los dispositivos de tipo On/Off esta variable va a valer 0.0 o 1.0. En el caso de los dimerizables, va a valer cualquier número entre 0.0 y 1.0.
 - `type`: es de tipo number e indica el tipo de dispositivo. 0 para los On/Off y 1 para los dimerizables.
 - `icon`: es de tipo string y contiene el nombre de la imagen que se usa como ícono.
 
 La **lógica principal** del frontend se implementa en la clase `Main` (en el archivo `main.ts`). En esta clase básicamente se hacen tres cosas:
-- Inicialización: en el método `main` de la clase se crea una instancia de la clase `MyFramework` la cual va a brindar algunas herramientas usadas por la clase `Main`. Además se hace un request al backend para pedir todos los dispositivos a mostrar. Finalmente se indica que la clase `Main` va a ser la que reciba los eventos click del dashboard. Para esto, la clase `Main` implementa la interfaz `EventListenerObject`.
+- Inicialización: en el método `main` de la clase se crea una instancia de la clase `MyFramework` la cual va a brindar algunas herramientas usadas por la clase `Main`. Además se hace un request (GET a `/devices`) al backend para pedir todos los dispositivos a mostrar. Finalmente se indica que la clase `Main` va a ser la que reciba los eventos `click` del dashboard. Para esto, la clase `Main` implementa la interfaz `EventListenerObject`.
 - Manejo de eventos: la clase main (en su método `handleEvent`) va a recibir todos los eventos de click que se hagan en cualquier elemento HTML que esté dentro del `<div>` con id `main_container_devices`. Este `<div>` contiene el botón para agregar dispositivos, las cards de todos los dispositivos y los dos modals antes explicados. Se eligió configurar un único event listener en este `<div>` ya que parte de la web va a ser generada de forma dinámica en función de los dispositivos que haya que mostrar.
 Dentro de este método, dependiendo del id del elemento HTML sobre el que se hizo click, se van a realizar diferentes acciones:
-  - `newDevice`: se hizo click en el botón para agregar un dispositivo. Se va a mostrar el modal `modal_new_device` para cargar los valores de cada uno de los campos de un nuevo equipo.
+  - `newDevice`: se hizo click en el botón para agregar un dispositivo. Se va a mostrar el modal `modal_new_device` en el que se van a cargar los valores de cada uno de los campos de un nuevo equipo.
   - `modal_new_device_create`: se hizo click en el botón Crear del modal `modal_new_device`, por lo que se recuperan los valores de los elementos del formulario contenido en ese modal y se realiza un `POST` al endpoint `/devices` para darlo de alta en el backend.
   - `modal_modify_device_modify`: se hizo click en el botón Modificar del modal `modal_modify_device` para modificar un dispositivo ya existente. Se recuperan los valores de los elementos del formulario de ese modal y se realiza un `PATCH` al endpoint `/devices` para modificar el dispositivo en el backend.
-  - Todos los elementos clickeables de las cards que representan a los dispositivos tienen un id con el siguiente formato: `opcion_id`. Es decir, cada elemento, en su id contiene qué hace ese botón y el id del dispostivo sobre lo que se tiene que hacer la acción:
+  - Todos los elementos clickeables de las cards que representan a los dispositivos tienen un id con el siguiente formato: `opcion_id`. Es decir, cada elemento, en su id contiene qué hace ese botón y el ID del dispostivo sobre lo que se quiere hacer la acción:
     - `modify`: se hizo click en la opción Modificar del dropdown que se abre al hacer click en los tres puntitos de la card del dispositivo con ID `id`. Se va a mostrar el modal `modal_modify_device` cargando en los elementos del formulario los valores actuales del dispositivo. Además se va a guardar la referencia al dispositivo que se está modificando en la variable `deviceToModify` para poder recuperar el resto de los campos si finalmente se completa la operación de modificación.
     - `delete`: se hizo click en la opción Eliminar del dropdown que se abre al hacer click en los tres puntitos de la card del dispositivo con ID `id`. Se realiza un `DELETE` al endpoint `/devices/:id` para borrarlo en el backend.
     - `switch`: se hizo click en el switch de la card del dispositivo con ID `id`. Se cambia el estado del dispositivo y se envía un `POST` al endpoint `/devices/state` para cambiarlo en el backend.
@@ -216,9 +216,9 @@ Dentro de este método, dependiendo del id del elemento HTML sobre el que se hiz
   - `handleDELETEResponse`: procesa el response al DELETE `/devices/:id`. Elimina la card del HTML correspondiente al dispositivo eliminado.
   - `handlePATCHResponse`: procesa el response al PATCH `/devices`. En el body del response viene el dispositivo modificado. Se modifica la instancia de `DeviceCard` correspondiente a ese dispositivo y se modifica el código HTML asociado.
 
-La clase **MyFramework** tiene varios métodos de utilidad para poder obtener acceder a los elementos del DOM y generar requests al backend. Además tiene dos arrays. El primero contiene la lista de dispositivos que se obtuvo del backend y el segundo es la lista de `DeviceCard` que se agregaron al HTML. La clase `Main` va a consultar estos dos arrays para mostrarlo en el dashboard.
+La clase **MyFramework** tiene varios métodos de utilidad para poder acceder a los elementos del DOM y generar requests al backend. Además tiene dos arrays: el primero contiene la lista de dispositivos que se obtuvo del backend y el segundo es la lista de `DeviceCard` que se agregaron al HTML. La clase `Main` va a consultar estos dos arrays para generar el dashboard.
 
-Finalmente, la clase **DeviceCard** se la utiliza para representar un dispositivo en HTML. Al crear una instancia, se le pasa una instancia de la clase `Device` y genera el código HTML necesario para dibujar una card que la represente. Luego, mediante el método `attach` de la clase `DeviceCard` se le indica a qué elemento del DOM se debe agregar este código HTML de la `DeviceCard`. También incluye el método `changeDevice` para volver a generar el código HTML de la card.
+Finalmente, la clase **DeviceCard** se la utiliza para representar un dispositivo en HTML. Al crear una instancia, se le pasa una instancia de la clase `Device` y genera el código HTML necesario para dibujar una card que la represente. Luego, mediante el método `attach` de la clase `DeviceCard` se le indica a qué elemento del DOM se debe agregar este código HTML de la `DeviceCard`. También incluye el método `changeDevice` para volver a generar el código HTML de la card cuando cambia la instancia de `Device` que tiene que representar.
 
 ### Backend
 
