@@ -66,7 +66,6 @@ exports.hasSetStateValidFields = (req, res, next) => {
     if (req.body.type != undefined) {
         let type = parseInt (req.body.type);
 
-        console.log(type);
         if (type !== 0 && type !== 1)
             errors.push("type debe valer 0 o 1");
     }
